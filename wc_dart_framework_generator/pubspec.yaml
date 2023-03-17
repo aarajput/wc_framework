@@ -1,7 +1,9 @@
 name: wc_dart_framework_generator
+description: Code generator for wc_dart_framework
+version: 1.0.0
 
 environment:
-  sdk: ">=2.18.4 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
   source_gen: ^1.2.6
@@ -10,8 +12,7 @@ dependencies:
   change_case: ^1.0.2
   path: ^1.8.2
   glob: ^2.0.1
-  wc_dart_framework:
-    path: ../wc_dart_framework
+  wc_dart_framework: 1.0.0
 
 dev_dependencies:
   flutter_lints: 2.0.1

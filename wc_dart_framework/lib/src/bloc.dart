@@ -6,4 +6,4 @@ class BlocUpdateField {
 }
 
 @Target({TargetKind.classType})
-class BlocGenerator {}
+class BlocGen {}

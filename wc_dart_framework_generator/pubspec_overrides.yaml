@@ -1,0 +1,3 @@
+dependency_overrides:
+  wc_dart_framework:
+    path: ../wc_dart_framework

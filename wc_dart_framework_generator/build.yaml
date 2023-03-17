@@ -2,20 +2,20 @@ builders:
   built_enum:
     import: "package:wc_dart_framework_generator/builder.dart"
     builder_factories: [ "builtEnumBuilder" ]
-    build_extensions: { ".dart": [ ".eg.dart" ] }
+    build_extensions: { ".dart": [ ".wc.g.dart" ] }
     auto_apply: dependents
     build_to: source
 
   bloc:
     import: "package:wc_dart_framework_generator/builder.dart"
     builder_factories: [ "blocBuilder" ]
-    build_extensions: { ".dart": [ ".bg.dart" ] }
+    build_extensions: { ".dart": [ ".wc.g.dart" ] }
     auto_apply: dependents
     build_to: source
 
   asset:
     import: "package:wc_dart_framework_generator/builder.dart"
     builder_factories: [ "assetBuilder" ]
-    build_extensions: { ".dart": [ ".ag.dart" ] }
+    build_extensions: { ".dart": [ ".wc.g.dart" ] }
     auto_apply: dependents
     build_to: source
