@@ -1,0 +1,17 @@
+name: razor_generator
+
+environment:
+  sdk: ">=2.18.4 <3.0.0"
+
+dependencies:
+  source_gen: ^1.2.6
+  analyzer: '>=4.6.0 <6.0.0'
+  build: ^2.0.0
+  change_case: ^1.0.2
+  path: ^1.8.2
+  glob: ^2.0.1
+  razor_annotations:
+    path: ../razor_annotations
+
+dev_dependencies:
+  flutter_lints: 2.0.1
