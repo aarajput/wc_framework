@@ -1,0 +1,17 @@
+name: example
+description: example of wc_dart_framework
+
+publish_to: 'none'
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  wc_dart_framework: 1.0.0
+
+dev_dependencies:
+  wc_dart_framework_generator: 1.0.0
+
+dev_dependencies_overrides:
+  wc_dart_framework_generator:
+    path: ../../wc_dart_framework_generator
