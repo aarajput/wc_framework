@@ -1,4 +1,4 @@
-name: razor_annotations
+name: wc_dart_framework
 
 environment:
   sdk: ">=2.18.4 <3.0.0"

@@ -4,3 +4,6 @@ import 'package:meta/meta_meta.dart';
 class BlocUpdateField {
   const BlocUpdateField();
 }
+
+@Target({TargetKind.classType})
+class BlocGenerator {}
