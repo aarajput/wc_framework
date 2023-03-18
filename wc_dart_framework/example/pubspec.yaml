@@ -8,6 +8,8 @@ environment:
 
 dependencies:
   wc_dart_framework: 1.0.0
+  built_value: 8.4.3
+  built_collection: 5.1.1
 
 dependency_overrides:
   wc_dart_framework:
@@ -17,6 +19,7 @@ dev_dependencies:
   wc_dart_framework_generator:
     path: ../../wc_dart_framework_generator
   build_runner: 2.3.3
+  built_value_generator: 8.4.3
 
 flutter:
   assets:
