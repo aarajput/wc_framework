@@ -6,7 +6,7 @@ import 'package:change_case/change_case.dart';
 import 'package:glob/glob.dart';
 import 'package:path/path.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:wc_dart_framework/razor_annotations.dart';
+import 'package:wc_dart_framework/wc_dart_framework.dart';
 
 class AssetGenerator extends GeneratorForAnnotation<AssetGen> {
   @override
@@ -43,7 +43,7 @@ class AssetGenerator extends GeneratorForAnnotation<AssetGen> {
     }
     final dir = Directory(path);
     if (!dir.existsSync()) {
-      throw ArgumentError('${dir.absolute.path} does not exists');
+      throw ArgumentError('Directory ${dir.absolute.path} does not exists');
     }
     final sb = StringBuffer();
     sb.writeln('class $generatedClassName {');

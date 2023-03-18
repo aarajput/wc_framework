@@ -9,9 +9,15 @@ environment:
 dependencies:
   wc_dart_framework: 1.0.0
 
-dev_dependencies:
-  wc_dart_framework_generator: 1.0.0
+dependency_overrides:
+  wc_dart_framework:
+    path: ../
 
-dev_dependencies_overrides:
+dev_dependencies:
   wc_dart_framework_generator:
     path: ../../wc_dart_framework_generator
+  build_runner: 2.3.3
+
+flutter:
+  assets:
+    - assets/
