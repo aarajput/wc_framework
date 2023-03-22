@@ -204,9 +204,10 @@ packages:
   wc_dart_framework:
     dependency: "direct main"
     description:
-      path: "../wc_dart_framework"
-      relative: true
-    source: path
+      name: wc_dart_framework
+      sha256: "8f9dfcdd62bd7e07018ded166694f99e4ccbbe70a53574825b72006fc85f846c"
+      url: "https://pub.dev"
+    source: hosted
     version: "1.0.0"
   yaml:
     dependency: transitive

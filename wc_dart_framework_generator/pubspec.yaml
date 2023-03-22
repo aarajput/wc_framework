@@ -16,7 +16,7 @@ dependencies:
   change_case: ^1.0.2
   path: ^1.8.2
   glob: ^2.0.1
-  wc_dart_framework: 1.0.0
+  wc_dart_framework: ^1.0.0
 
 dev_dependencies:
   flutter_lints: 2.0.1
