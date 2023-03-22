@@ -1,0 +1,1 @@
+Dart framework generator for [wc_dart_framework](https://pub.dev/packages/wc_dart_framework)
