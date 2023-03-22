@@ -6,4 +6,6 @@ class BlocUpdateField {
 }
 
 @Target({TargetKind.classType})
-class BlocGen {}
+class BlocGen {
+  const BlocGen();
+}

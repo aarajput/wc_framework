@@ -14,7 +14,7 @@ Builder enumBuilder(final BuilderOptions options) => PartBuilder(
 
 Builder blocBuilder(final BuilderOptions options) => PartBuilder(
       [BlocGenerator()],
-      '.bloc.g..dart',
+      '.bloc.g.dart',
       options: options,
       header: '// ignore_for_file: type=lint, unused_element',
     );
