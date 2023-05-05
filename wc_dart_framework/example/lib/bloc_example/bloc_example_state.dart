@@ -1,4 +1,7 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
+import 'package:example/bloc_example/bloc_example_data.dart';
+import 'package:wc_dart_framework/wc_dart_framework.dart';
 
 part 'bloc_example_state.g.dart';
 
@@ -13,9 +16,34 @@ abstract class BlocExampleState
   @BuiltValueHook(initializeBuilder: true)
   static void _initialize(final BlocExampleStateBuilder b) => b;
 
-  String get value1;
+  @BlocUpdateField()
+  @BlocHydratedField()
+  String? get value1;
 
+  @BlocHydratedField()
   int get value2;
 
+  @BlocHydratedField()
   double get value3;
+
+  @BlocHydratedField()
+  BlocExampleData? get value4;
+
+  @BlocHydratedField()
+  BuiltList<BlocExampleData> get value5;
+
+  @BlocHydratedField()
+  BuiltList<BuiltList<BlocExampleData>> get value6;
+
+  @BlocHydratedField()
+  BuiltList<BuiltList<BlocExampleData?>> get value7;
+
+  @BlocHydratedField()
+  BuiltList<BuiltSet<BlocExampleData?>> get value8;
+
+  // @BlocHydratedField()
+  BuiltMap<String, BlocExampleData> get value9;
+
+  // @BlocHydratedField()
+  BuiltList<BuiltMap<String, BlocExampleData>> get value10;
 }

@@ -1,8 +1,11 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:change_case/change_case.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:wc_dart_framework/wc_dart_framework.dart';
+import 'package:wc_dart_framework_generator/extensions/element.dart';
 
 class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
   @override
@@ -45,7 +48,21 @@ class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
     }
     final clsStateName = superType.typeArguments.first.toString();
     final isClsStateNullable = clsStateName.endsWith('?');
-
+    final clsStateNullableEscapeCharacter = isClsStateNullable ? '?' : '';
+    final clsStateNameWithoutNullCharacter =
+        superType.typeArguments.first.getDisplayString(
+      withNullability: false,
+    );
+    final fields = clsState.fields.where((field) {
+      final getter = field.getter;
+      if (getter == null) {
+        return false;
+      }
+      if (!getter.isAbstract) {
+        return false;
+      }
+      return true;
+    }).toList();
     final sb = StringBuffer();
 
     // creating bloc-builder ---- start
@@ -83,17 +100,10 @@ class ${cls.displayName}Selector<T> extends StatelessWidget {
   }) : super(key: key);
       ''');
 
-    for (final field in clsState.fields) {
-      final getter = field.getter;
-      if (getter == null) {
-        continue;
-      }
-      if (!getter.isAbstract) {
-        continue;
-      }
-      bool isReturnTypeNullable = getter.returnType.toString().endsWith('?');
+    for (final field in fields) {
+      final getter = field.getter!;
       String returnTypeDisplayNameWithNullability =
-          '${getter.returnType}${isClsStateNullable && !isReturnTypeNullable ? '?' : ''}';
+          '${getter.returnType}${isClsStateNullable && !getter.isReturnTypeNullable ? '?' : ''}';
       sb.writeln('''
   static ${cls.displayName}Selector<$returnTypeDisplayNameWithNullability> ${field.displayName}({
     final Key? key,
@@ -101,7 +111,7 @@ class ${cls.displayName}Selector<T> extends StatelessWidget {
   }) {
     return ${cls.displayName}Selector(
       key: key,
-      selector: (state) => state${isClsStateNullable ? '?' : ''}.${field.displayName},
+      selector: (state) => state$clsStateNullableEscapeCharacter.${field.displayName},
       builder: (value) => builder(value),
     );
   }
@@ -124,19 +134,9 @@ class ${cls.displayName}Selector<T> extends StatelessWidget {
     sb.writeln('''
 mixin _${cls.displayName}Mixin on Cubit<$clsStateName> {
       ''');
-    for (final field in clsState.fields) {
-      final getter = field.getter;
-      if (getter == null) {
-        continue;
-      }
-      if (!getter.isAbstract) {
-        continue;
-      }
-      final isBlocUpdateField = getter.metadata.indexWhere(
-            (final md) => md.element?.displayName == 'BlocUpdateField',
-          ) >=
-          0;
-      if (!isBlocUpdateField) {
+    for (final field in fields) {
+      final getter = field.getter!;
+      if (!getter.hasAnnotation('BlocUpdateField')) {
         continue;
       }
       final returnType = getter.returnType.element;
@@ -144,20 +144,13 @@ mixin _${cls.displayName}Mixin on Cubit<$clsStateName> {
       sb.writeln('''
   @mustCallSuper
   void update${getter.displayName.toPascalCase()}(final ${getter.returnType} ${field.displayName}) {
-    if(state.${field.displayName} == ${field.displayName}){
+    if(state$clsStateNullableEscapeCharacter.${field.displayName} == ${field.displayName}){
       return;
     }
         ''');
-      if (returnType is ClassElement &&
-          (returnType.allSupertypes.indexWhere((final st) {
-                    final sst = st.toString();
-                    return sst.startsWith('Built<') ||
-                        sst.startsWith('BuiltIterable<');
-                  }) >=
-                  0 ||
-              returnType.displayName == 'BuiltMap')) {
+      if (returnType is ClassElement && returnType.isBuiltValue) {
         sb.writeln('''
-    emit(state.rebuild((final b) {
+    emit(state$clsStateNullableEscapeCharacter.rebuild((final b) {
         ''');
         if (isReturnTypeNullable) {
           sb.writeln('''
@@ -174,7 +167,7 @@ mixin _${cls.displayName}Mixin on Cubit<$clsStateName> {
         ''');
       } else {
         sb.writeln('''
-    emit(state.rebuild((final b) => b.${field.displayName} = ${field.displayName}));
+    emit(state$clsStateNullableEscapeCharacter.rebuild((final b) => b.${field.displayName} = ${field.displayName}));
         ''');
       }
       sb.writeln('''
@@ -188,6 +181,108 @@ mixin _${cls.displayName}Mixin on Cubit<$clsStateName> {
 }
       ''');
     // creating bloc-extension ---- end
+
+    // creating bloc-hydration ---- start
+    sb.writeln('''
+mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
+    ''');
+    final hydratedFields = fields.where(
+      (field) {
+        final getter = field.getter!;
+        if (!getter.hasAnnotation('BlocHydratedField')) {
+          return false;
+        }
+        return true;
+      },
+    );
+    sb.writeln('''
+      @override
+      Map<String, dynamic>? toJson($clsStateName state) {
+          final json = <String, dynamic>{};
+        ''');
+
+    // this is used when its Map, BuiltMap or Iterable
+    String toSerializeFromElement(InterfaceType type) {
+      final element = type.element;
+      final fieldNullableEscapeCharacter =
+          type.nullabilitySuffix == NullabilitySuffix.question ? '?' : '';
+      if (element is ClassElement) {
+        if (element.isBlocHydratedSerializer) {
+          return 'obj$fieldNullableEscapeCharacter.toDynamic()';
+        } else if (element.isIterable) {
+          final interfaceType = type.typeArguments.first as InterfaceType;
+          return 'obj$fieldNullableEscapeCharacter.map((obj)=>${toSerializeFromElement(interfaceType)},).toList()';
+        } else if (element.isBuiltMap) {
+          return 'map';
+        }
+      }
+      return 'obj';
+    }
+
+    String toSerializeFromFieldElement(FieldElement field) {
+      final getter = field.getter!;
+      final returnTypeElement = getter.returnType.element;
+      final fieldNullableEscapeCharacter =
+          getter.isReturnTypeNullable ? '?' : '';
+      if (returnTypeElement is ClassElement) {
+        if (returnTypeElement.isBlocHydratedSerializer) {
+          return '${field.displayName}$fieldNullableEscapeCharacter.toDynamic()';
+        } else if (returnTypeElement.isIterable) {
+          final interfaceType = (getter.returnType as InterfaceType)
+              .typeArguments
+              .first as InterfaceType;
+          return '${field.displayName}$fieldNullableEscapeCharacter.map((obj)=>${toSerializeFromElement(interfaceType)},).toList()';
+        }
+      }
+      return field.displayName;
+    }
+
+    for (final field in hydratedFields) {
+      final sField = toSerializeFromFieldElement(field);
+      sb.writeln('''
+          json['${field.displayName}'] = state$clsStateNullableEscapeCharacter.$sField;
+          ''');
+    }
+    sb.writeln('''
+        return json;
+      }
+        ''');
+    sb.writeln('''
+      @override
+      $clsStateName fromJson(Map<String, dynamic> json) {
+        final b = ${clsStateNameWithoutNullCharacter}Builder();
+        ''');
+    for (final field in hydratedFields) {
+      final getter = field.getter!;
+      final returnType = getter.returnType.element;
+      final isBuiltValue =
+          returnType is ClassElement && returnType.isBuiltValue;
+      sb.writeln('''
+        if (json['${field.name}'] != null) {
+          try {
+          ''');
+      if (isBuiltValue) {
+      } else {
+        sb.writeln('''
+            b.${field.name} = json['${field.name}'];
+            ''');
+      }
+      sb.writeln('''
+          } catch (e) {
+            _logger.severe('${field.displayName}: \$e');
+          }
+        }
+          ''');
+    }
+    sb.writeln('''
+        return b.build();
+      }
+        ''');
+
+    sb.writeln('''
+}
+    ''');
+    // creating bloc-hydration ---- end
 
     return sb.toString();
   }

@@ -5,7 +5,21 @@ class BlocUpdateField {
   const BlocUpdateField();
 }
 
+@Target({TargetKind.getter})
+class BlocHydratedField {
+  const BlocHydratedField();
+}
+
+@Target({TargetKind.classType})
+class BlocHydratedClass {
+  const BlocHydratedClass();
+}
+
 @Target({TargetKind.classType})
 class BlocGen {
   const BlocGen();
+}
+
+mixin BlocHydratedSerializer {
+  Object? toDynamic();
 }

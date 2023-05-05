@@ -10,8 +10,10 @@ dependencies:
   wc_dart_framework: 1.0.0
   built_value: 8.4.3
   built_collection: 5.1.1
+  hydrated_bloc: 9.1.0
   bloc: 8.1.1
   flutter_bloc: 8.1.2
+  meta: 1.8.0
 
 dependency_overrides:
   flutter_lints: 2.0.1
