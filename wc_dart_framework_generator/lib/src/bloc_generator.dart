@@ -212,8 +212,6 @@ mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
         } else if (element.isIterable) {
           final interfaceType = type.typeArguments.first as InterfaceType;
           return 'obj$fieldNullableEscapeCharacter.map((obj)=>${toSerializeFromElement(interfaceType)},).toList()';
-        } else if (element.isBuiltMap) {
-          return 'map';
         }
       }
       return 'obj';

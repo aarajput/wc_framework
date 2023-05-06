@@ -41,9 +41,9 @@ abstract class BlocExampleState
   @BlocHydratedField()
   BuiltList<BuiltSet<BlocExampleData?>> get value8;
 
-  // @BlocHydratedField()
+  @BlocHydratedField()
   BuiltMap<String, BlocExampleData> get value9;
 
-  // @BlocHydratedField()
+  @BlocHydratedField()
   BuiltList<BuiltMap<String, BlocExampleData>> get value10;
 }

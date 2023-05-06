@@ -67,7 +67,7 @@ extension XClassElement on ClassElement {
   }
 
   bool get isBuiltMap {
-    return displayName.startsWith('BuiltMap') ||
+    return displayName == 'BuiltMap' ||
         allSupertypes.indexWhere((final st) {
               return st
                   .getDisplayString(

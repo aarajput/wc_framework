@@ -21,9 +21,9 @@ abstract class BlocExampleData
 
   int get id;
 
-  String get updatedOn;
+  String get name;
 
-  String get createdOn;
+  DateTime get createdOn;
 
   static BlocExampleData fromDynamic(final dynamic json) {
     return serializers.deserializeWith(
