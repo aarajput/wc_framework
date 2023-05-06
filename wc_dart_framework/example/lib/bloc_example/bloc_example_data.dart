@@ -16,6 +16,13 @@ abstract class BlocExampleData
 
   BlocExampleData._();
 
+  @BuiltValueHook(initializeBuilder: true)
+  static void _initialize(final BlocExampleDataBuilder b) {
+    b.id = -1;
+    b.name = 'test';
+    b.createdOn = DateTime.now().toUtc();
+  }
+
   static Serializer<BlocExampleData> get serializer =>
       _$blocExampleDataSerializer;
 
@@ -24,6 +31,14 @@ abstract class BlocExampleData
   String get name;
 
   DateTime get createdOn;
+
+  BuiltList<int?> get ints;
+
+  BuiltList<BuiltList<int>> get intsDouble;
+
+  BuiltMap<String, String?> get maps;
+
+  BuiltMap<BlocExampleData, BlocExampleData> get mapsDatas;
 
   static BlocExampleData fromDynamic(final dynamic json) {
     return serializers.deserializeWith(

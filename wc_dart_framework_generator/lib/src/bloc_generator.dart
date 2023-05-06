@@ -199,46 +199,36 @@ mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
       @override
       Map<String, dynamic>? toJson($clsStateName state) {
           final json = <String, dynamic>{};
+          if (state==null) {
+            return json;
+          }
         ''');
 
-    // this is used when its Map, BuiltMap or Iterable
-    String toSerializeFromElement(InterfaceType type) {
-      final element = type.element;
-      final fieldNullableEscapeCharacter =
-          type.nullabilitySuffix == NullabilitySuffix.question ? '?' : '';
-      if (element is ClassElement) {
-        if (element.isBlocHydratedSerializer) {
-          return 'obj$fieldNullableEscapeCharacter.toDynamic()';
-        } else if (element.isIterable) {
-          final interfaceType = type.typeArguments.first as InterfaceType;
-          return 'obj$fieldNullableEscapeCharacter.map((obj)=>${toSerializeFromElement(interfaceType)},).toList()';
-        }
-      }
-      return 'obj';
-    }
-
     String toSerializeFromFieldElement(FieldElement field) {
-      final getter = field.getter!;
-      final returnTypeElement = getter.returnType.element;
-      final fieldNullableEscapeCharacter =
-          getter.isReturnTypeNullable ? '?' : '';
-      if (returnTypeElement is ClassElement) {
-        if (returnTypeElement.isBlocHydratedSerializer) {
-          return '${field.displayName}$fieldNullableEscapeCharacter.toDynamic()';
-        } else if (returnTypeElement.isIterable) {
-          final interfaceType = (getter.returnType as InterfaceType)
-              .typeArguments
-              .first as InterfaceType;
-          return '${field.displayName}$fieldNullableEscapeCharacter.map((obj)=>${toSerializeFromElement(interfaceType)},).toList()';
+      String getFullType(DartType type) {
+        final typeName = type.element!.displayName;
+        String specifiedType;
+        if (type.nullabilitySuffix == NullabilitySuffix.question) {
+          specifiedType = 'FullType.nullable($typeName,[';
+        } else {
+          specifiedType = 'FullType($typeName,[';
         }
+        if (type is InterfaceType) {
+          for (final genericType in type.typeArguments) {
+            specifiedType += getFullType(genericType);
+          }
+        }
+        specifiedType += ']),';
+        return specifiedType;
       }
-      return field.displayName;
+
+      final getter = field.getter!;
+      return 'serializers.serialize(state.${field.displayName}, specifiedType: const ${getFullType(getter.returnType)})';
     }
 
     for (final field in hydratedFields) {
-      final sField = toSerializeFromFieldElement(field);
       sb.writeln('''
-          json['${field.displayName}'] = state$clsStateNullableEscapeCharacter.$sField;
+          json['${field.displayName}'] = ${toSerializeFromFieldElement(field)};
           ''');
     }
     sb.writeln('''

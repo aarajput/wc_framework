@@ -11,7 +11,7 @@ extension XPropertyAccessorElement on PropertyAccessorElement {
 
   bool hasAnnotation(final String annotation) {
     return metadata.indexWhere(
-          (final md) => md.element?.displayName == 'BlocHydratedField',
+          (final md) => md.element?.displayName == annotation,
         ) >=
         0;
   }
@@ -20,7 +20,7 @@ extension XPropertyAccessorElement on PropertyAccessorElement {
 extension XClassElement on ClassElement {
   bool hasAnnotation(final String annotation) {
     return metadata.indexWhere(
-          (final md) => md.element?.displayName == 'BlocHydratedField',
+          (final md) => md.element?.displayName == annotation,
         ) >=
         0;
   }

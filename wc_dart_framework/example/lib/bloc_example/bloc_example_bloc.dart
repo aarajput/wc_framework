@@ -1,7 +1,9 @@
 // ignore_for_file: unnecessary_import, depend_on_referenced_packages
 
 import 'package:built_collection/built_collection.dart';
+import 'package:built_value/serializer.dart';
 import 'package:example/bloc_example/bloc_example_state.dart';
+import 'package:example/bloc_example/serializers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -15,6 +17,12 @@ part 'bloc_example_bloc.bloc.g.dart';
 const dynamic _logger = '';
 
 @BlocGen()
-class BlocExampleBloc extends Cubit<BlocExampleState?> {
-  BlocExampleBloc() : super(BlocExampleState());
+class BlocExampleBloc extends Cubit<BlocExampleState?>
+    with HydratedMixin, _BlocExampleBlocHydratedMixin, _BlocExampleBlocMixin {
+  BlocExampleBloc() : super(BlocExampleState()) {
+    hydrate();
+  }
+
+  factory BlocExampleBloc.of(final BuildContext context) =>
+      BlocProvider.of<BlocExampleBloc>(context);
 }
