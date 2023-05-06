@@ -43,9 +43,7 @@ class MyHomePage extends StatelessWidget {
           child: Builder(builder: (context) {
             return ElevatedButton(
               child: const Text('Update Bloc'),
-              onPressed: () => BlocExampleBloc.of(context).updateValue2(
-                DateTime.now().millisecondsSinceEpoch,
-              ),
+              onPressed: () => BlocExampleBloc.of(context).updateData(),
             );
           }),
         ),

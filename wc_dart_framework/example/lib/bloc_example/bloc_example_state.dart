@@ -14,18 +14,11 @@ abstract class BlocExampleState
   BlocExampleState._();
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _initialize(final BlocExampleStateBuilder b) {
-    b.value5.add(BlocExampleData());
-    final list = BuiltList<BlocExampleData>([
-      BlocExampleData(),
-    ]);
-    b.value6.add(list);
-  }
+  static void _initialize(final BlocExampleStateBuilder b) => b;
 
   @BlocHydratedField()
   String? get value1;
 
-  @BlocUpdateField()
   @BlocHydratedField()
   int? get value2;
 
@@ -38,18 +31,18 @@ abstract class BlocExampleState
   @BlocHydratedField()
   BuiltList<BlocExampleData> get value5;
 
-  @BlocHydratedField()
+  // @BlocHydratedField()
   BuiltList<BuiltList<BlocExampleData>> get value6;
 
-  @BlocHydratedField()
+  // @BlocHydratedField()
   BuiltList<BuiltList<BlocExampleData?>> get value7;
 
-  @BlocHydratedField()
+  // @BlocHydratedField()
   BuiltList<BuiltSet<BlocExampleData?>> get value8;
 
   @BlocHydratedField()
-  BuiltMap<String, BlocExampleData> get value9;
+  BuiltMap<int, BlocExampleData> get value9;
 
-  @BlocHydratedField()
+  // @BlocHydratedField()
   BuiltList<BuiltMap<String, BlocExampleData>> get value10;
 }

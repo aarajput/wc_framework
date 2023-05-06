@@ -19,7 +19,3 @@ class BlocHydratedClass {
 class BlocGen {
   const BlocGen();
 }
-
-mixin BlocHydratedSerializer {
-  Object? toDynamic();
-}
