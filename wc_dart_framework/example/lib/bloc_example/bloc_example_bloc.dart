@@ -13,7 +13,7 @@ import 'bloc_example_data.dart';
 
 part 'bloc_example_bloc.bloc.g.dart';
 
-const dynamic _logger = '';
+final _logger = Logger('bloc_example_bloc.dart');
 
 @BlocGen()
 class BlocExampleBloc extends Cubit<BlocExampleState?>
@@ -43,6 +43,10 @@ class BlocExampleBloc extends Cubit<BlocExampleState?>
           b.value9[9] = BlocExampleData((b) => b
             ..id = 9
             ..name = 'val9'
+            ..createdOn = DateTime.now().toUtc());
+          b.value10['10'] = BlocExampleData((b) => b
+            ..id = 10
+            ..name = 'val10'
             ..createdOn = DateTime.now().toUtc());
         },
       ),

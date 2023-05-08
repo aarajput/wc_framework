@@ -204,31 +204,31 @@ mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
           }
         ''');
 
-    String toSerializeFromFieldElement(FieldElement field) {
-      String getFullType(DartType type) {
-        final typeName = type.element!.displayName;
-        String specifiedType;
-        if (type.nullabilitySuffix == NullabilitySuffix.question) {
-          specifiedType = 'FullType.nullable($typeName,[';
-        } else {
-          specifiedType = 'FullType($typeName,[';
-        }
-        if (type is InterfaceType) {
-          for (final genericType in type.typeArguments) {
-            specifiedType += getFullType(genericType);
-          }
-        }
-        specifiedType += ']),';
-        return specifiedType;
+    String getFullType(DartType type) {
+      final typeName = type.element!.displayName;
+      String specifiedType;
+      if (type.nullabilitySuffix == NullabilitySuffix.question) {
+        specifiedType = 'FullType.nullable($typeName,[';
+      } else {
+        specifiedType = 'FullType($typeName,[';
       }
-
-      final getter = field.getter!;
-      return 'serializers.serialize(state.${field.displayName}, specifiedType: const ${getFullType(getter.returnType)})';
+      if (type is InterfaceType) {
+        for (final genericType in type.typeArguments) {
+          specifiedType += getFullType(genericType);
+        }
+      }
+      specifiedType += ']),';
+      return specifiedType;
     }
 
     for (final field in hydratedFields) {
+      final getter = field.getter!;
       sb.writeln('''
-          json['${field.displayName}'] = ${toSerializeFromFieldElement(field)};
+        try {
+          json['${field.displayName}'] = serializers.serialize(state.${field.displayName}, specifiedType: const ${getFullType(getter.returnType)});
+        }catch (e) {
+          _logger.severe('toJson->${field.displayName}: \$e');
+        }
           ''');
     }
     sb.writeln('''
@@ -242,22 +242,27 @@ mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
         ''');
     for (final field in hydratedFields) {
       final getter = field.getter!;
-      final returnType = getter.returnType.element;
-      final isBuiltValue =
-          returnType is ClassElement && returnType.isBuiltValue;
+      final returnTypeElement = getter.returnType.element;
       sb.writeln('''
-        if (json['${field.name}'] != null) {
+        if (json.containsKey('${field.name}')) {
           try {
           ''');
-      if (isBuiltValue) {
+      if (returnTypeElement is ClassElement && returnTypeElement.isBuiltValue) {
+        sb.writeln('''
+            b.${field.displayName}.replace(serializers.deserialize(json['${field.displayName}'], specifiedType: const ${getFullType(getter.returnType)})! as ${getter.returnType.getDisplayString(
+          withNullability: false,
+        )});
+          ''');
       } else {
         sb.writeln('''
-            b.${field.name} = json['${field.name}'];
-            ''');
+            b.${field.displayName} = json['${field.displayName}'] as ${getter.returnType.getDisplayString(
+          withNullability: true,
+        )};
+          ''');
       }
       sb.writeln('''
           } catch (e) {
-            _logger.severe('${field.displayName}: \$e');
+            _logger.severe('fromJson->${field.displayName}: \$e');
           }
         }
           ''');

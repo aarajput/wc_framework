@@ -21,4 +21,6 @@ abstract class CustomBuilderFactoriesData
   BuiltList<BlocExampleData> get f1;
 
   BuiltMap<int, BlocExampleData> get f2;
+
+  BuiltMap<String, BlocExampleData> get f3;
 }

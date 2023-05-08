@@ -26,7 +26,7 @@ abstract class BlocExampleData
 
   DateTime get createdOn;
 
-  BuiltList<int?> get ints;
+  BuiltList<int?>? get ints;
 
   BuiltList<BuiltList<int>> get intsDouble;
 

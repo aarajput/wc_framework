@@ -29,7 +29,7 @@ abstract class BlocExampleState
   BlocExampleData? get value4;
 
   @BlocHydratedField()
-  BuiltList<BlocExampleData> get value5;
+  BuiltList<BlocExampleData>? get value5;
 
   // @BlocHydratedField()
   BuiltList<BuiltList<BlocExampleData>> get value6;
@@ -43,6 +43,9 @@ abstract class BlocExampleState
   @BlocHydratedField()
   BuiltMap<int, BlocExampleData> get value9;
 
+  @BlocHydratedField()
+  BuiltMap<String, BlocExampleData> get value10;
+
   // @BlocHydratedField()
-  BuiltList<BuiltMap<String, BlocExampleData>> get value10;
+  BuiltList<BuiltMap<String, BlocExampleData>> get value11;
 }
