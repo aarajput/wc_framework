@@ -1,6 +1,6 @@
 name: wc_dart_framework
 description: Dart framework to provide common code for projects
-version: 1.0.1
+version: 1.1.0
 homepage: https://github.com/aarajput/wc_framework/tree/main/wc_dart_framework
 repository: https://github.com/aarajput/wc_framework
 issue_tracker: https://github.com/aarajput/wc_framework/issues
@@ -11,8 +11,8 @@ environment:
 
 dependencies:
   meta: ^1.7.0
-  logging: 1.1.1
-  ansicolor: 2.0.1
+  logging: ^1.1.1
+  ansicolor: ^2.0.1
 
 dev_dependencies:
   flutter_lints: 2.0.1

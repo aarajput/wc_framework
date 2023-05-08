@@ -5,13 +5,10 @@ extension XNullabilitySuffix on NullabilitySuffix {
     switch (this) {
       case NullabilitySuffix.question:
         return '?';
-        break;
       case NullabilitySuffix.star:
         return '*';
-        break;
       case NullabilitySuffix.none:
         return '';
-        break;
     }
   }
 }

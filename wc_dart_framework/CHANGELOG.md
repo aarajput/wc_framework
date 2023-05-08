@@ -1,3 +1,7 @@
+## 1.1.0
+- BlocHydratedField added.
+- LoggingUtils added.
+
 ## 1.0.1
 - EnumGen's TargetKind updated.
 

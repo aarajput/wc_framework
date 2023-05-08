@@ -11,11 +11,6 @@ class BlocHydratedField {
 }
 
 @Target({TargetKind.classType})
-class BlocHydratedClass {
-  const BlocHydratedClass();
-}
-
-@Target({TargetKind.classType})
 class BlocGen {
   const BlocGen();
 }
