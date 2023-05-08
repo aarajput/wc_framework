@@ -1,3 +1,6 @@
+## 1.1.3
+- null check added in fromJson.
+
 ## 1.1.2
 - Generate will generate HydratedMixin only if any hydrated field is present.
 

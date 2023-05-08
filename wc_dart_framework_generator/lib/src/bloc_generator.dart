@@ -184,7 +184,7 @@ mixin _${cls.displayName}Mixin on Cubit<$clsStateName> {
 
     // creating bloc-hydration ---- start
     final hydratedFields = fields.where(
-          (field) {
+      (field) {
         final getter = field.getter!;
         if (!getter.hasAnnotation('BlocHydratedField')) {
           return false;
@@ -192,7 +192,7 @@ mixin _${cls.displayName}Mixin on Cubit<$clsStateName> {
         return true;
       },
     );
-    if(hydratedFields.isNotEmpty) {
+    if (hydratedFields.isNotEmpty) {
       sb.writeln('''
 mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
     ''');
@@ -252,11 +252,16 @@ mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
         if (json.containsKey('${field.name}')) {
           try {
           ''');
-        if (returnTypeElement is ClassElement && returnTypeElement.isBuiltValue) {
+        if (returnTypeElement is ClassElement &&
+            returnTypeElement.isBuiltValue) {
           sb.writeln('''
+          if (json['${field.displayName}'] == null) {
+            b.${field.displayName} = null;
+          } else {
             b.${field.displayName}.replace(serializers.deserialize(json['${field.displayName}'], specifiedType: const ${getFullType(getter.returnType)})! as ${getter.returnType.getDisplayString(
             withNullability: false,
           )});
+          }
           ''');
         } else {
           sb.writeln('''
