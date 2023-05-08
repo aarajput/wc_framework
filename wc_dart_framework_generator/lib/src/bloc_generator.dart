@@ -183,11 +183,8 @@ mixin _${cls.displayName}Mixin on Cubit<$clsStateName> {
     // creating bloc-extension ---- end
 
     // creating bloc-hydration ---- start
-    sb.writeln('''
-mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
-    ''');
     final hydratedFields = fields.where(
-      (field) {
+          (field) {
         final getter = field.getter!;
         if (!getter.hasAnnotation('BlocHydratedField')) {
           return false;
@@ -195,90 +192,95 @@ mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
         return true;
       },
     );
-    sb.writeln('''
+    if(hydratedFields.isNotEmpty) {
+      sb.writeln('''
+mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
+    ''');
+      sb.writeln('''
       @override
       Map<String, dynamic>? toJson($clsStateName state) {
           final json = <String, dynamic>{};
         ''');
-    if (isClsStateNullable) {
-      sb.writeln('''
+      if (isClsStateNullable) {
+        sb.writeln('''
           if (state==null) {
             return json;
           }
           ''');
-    }
-
-    String getFullType(DartType type) {
-      final typeName = type.element!.displayName;
-      String specifiedType;
-      if (type.nullabilitySuffix == NullabilitySuffix.question) {
-        specifiedType = 'FullType.nullable($typeName,[';
-      } else {
-        specifiedType = 'FullType($typeName,[';
       }
-      if (type is InterfaceType) {
-        for (final genericType in type.typeArguments) {
-          specifiedType += getFullType(genericType);
+
+      String getFullType(DartType type) {
+        final typeName = type.element!.displayName;
+        String specifiedType;
+        if (type.nullabilitySuffix == NullabilitySuffix.question) {
+          specifiedType = 'FullType.nullable($typeName,[';
+        } else {
+          specifiedType = 'FullType($typeName,[';
         }
+        if (type is InterfaceType) {
+          for (final genericType in type.typeArguments) {
+            specifiedType += getFullType(genericType);
+          }
+        }
+        specifiedType += ']),';
+        return specifiedType;
       }
-      specifiedType += ']),';
-      return specifiedType;
-    }
 
-    for (final field in hydratedFields) {
-      final getter = field.getter!;
-      sb.writeln('''
+      for (final field in hydratedFields) {
+        final getter = field.getter!;
+        sb.writeln('''
         try {
           json['${field.displayName}'] = serializers.serialize(state.${field.displayName}, specifiedType: const ${getFullType(getter.returnType)});
         }catch (e) {
           _logger.severe('toJson->${field.displayName}: \$e');
         }
           ''');
-    }
-    sb.writeln('''
+      }
+      sb.writeln('''
         return json;
       }
         ''');
-    sb.writeln('''
+      sb.writeln('''
       @override
       $clsStateName fromJson(Map<String, dynamic> json) {
         final b = ${clsStateNameWithoutNullCharacter}Builder();
         ''');
-    for (final field in hydratedFields) {
-      final getter = field.getter!;
-      final returnTypeElement = getter.returnType.element;
-      sb.writeln('''
+      for (final field in hydratedFields) {
+        final getter = field.getter!;
+        final returnTypeElement = getter.returnType.element;
+        sb.writeln('''
         if (json.containsKey('${field.name}')) {
           try {
           ''');
-      if (returnTypeElement is ClassElement && returnTypeElement.isBuiltValue) {
-        sb.writeln('''
+        if (returnTypeElement is ClassElement && returnTypeElement.isBuiltValue) {
+          sb.writeln('''
             b.${field.displayName}.replace(serializers.deserialize(json['${field.displayName}'], specifiedType: const ${getFullType(getter.returnType)})! as ${getter.returnType.getDisplayString(
-          withNullability: false,
-        )});
+            withNullability: false,
+          )});
           ''');
-      } else {
-        sb.writeln('''
+        } else {
+          sb.writeln('''
             b.${field.displayName} = json['${field.displayName}'] as ${getter.returnType.getDisplayString(
-          withNullability: true,
-        )};
+            withNullability: true,
+          )};
           ''');
-      }
-      sb.writeln('''
+        }
+        sb.writeln('''
           } catch (e) {
             _logger.severe('fromJson->${field.displayName}: \$e');
           }
         }
           ''');
-    }
-    sb.writeln('''
+      }
+      sb.writeln('''
         return b.build();
       }
         ''');
 
-    sb.writeln('''
+      sb.writeln('''
 }
     ''');
+    }
     // creating bloc-hydration ---- end
 
     return sb.toString();
