@@ -199,10 +199,14 @@ mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
       @override
       Map<String, dynamic>? toJson($clsStateName state) {
           final json = <String, dynamic>{};
+        ''');
+    if (isClsStateNullable) {
+      sb.writeln('''
           if (state==null) {
             return json;
           }
-        ''');
+          ''');
+    }
 
     String getFullType(DartType type) {
       final typeName = type.element!.displayName;

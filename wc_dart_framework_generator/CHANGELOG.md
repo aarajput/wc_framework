@@ -1,3 +1,6 @@
+## 1.1.1
+- toJson state null check added.
+
 ## 1.1.0
 - BlocHydratedField added.
 
