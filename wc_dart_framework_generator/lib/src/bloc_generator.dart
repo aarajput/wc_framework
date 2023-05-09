@@ -23,7 +23,6 @@ class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
     final hydrateStateKey = hydrateStateKeyAnnotation.isString
         ? hydrateStateKeyAnnotation.stringValue
         : null;
-    print('hydrateStateKey: $hydrateStateKey');
     final superTypes = cls.allSupertypes;
     final index = superTypes.indexWhere(
       (final type) => type
