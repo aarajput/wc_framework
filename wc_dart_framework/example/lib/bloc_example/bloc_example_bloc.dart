@@ -10,13 +10,14 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:wc_dart_framework/wc_dart_framework.dart';
 
 import 'bloc_example_data.dart';
+import 'bloc_example_enum.dart';
 
 part 'bloc_example_bloc.bloc.g.dart';
 
 final _logger = Logger('bloc_example_bloc.dart');
 
 @BlocGen(
-  hydrateState: true,
+  hydrateState: false,
   hydrateStateKey: 'blocExampleState',
 )
 class BlocExampleBloc extends Cubit<BlocExampleState>

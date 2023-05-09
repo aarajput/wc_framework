@@ -3,6 +3,8 @@ import 'package:built_value/built_value.dart';
 import 'package:example/bloc_example/bloc_example_data.dart';
 import 'package:wc_dart_framework/wc_dart_framework.dart';
 
+import 'bloc_example_enum.dart';
+
 part 'bloc_example_state.g.dart';
 
 abstract class BlocExampleState
@@ -48,4 +50,7 @@ abstract class BlocExampleState
 
   // @BlocHydratedField()
   BuiltList<BuiltMap<String, BlocExampleData>> get value11;
+
+  @BlocHydratedField()
+  BlocExampleEnum? get value12;
 }

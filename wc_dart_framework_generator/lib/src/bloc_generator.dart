@@ -264,9 +264,9 @@ mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
       if (isHydrateState) {
         sb.writeln('''
         try {
-          return serializers.deserialize(json['${hydrateStateKey??clsStateNameWithoutNullCharacter}'], specifiedType: const ${getFullType(clsStateType)})! as $clsStateNameWithoutNullCharacter;
+          return serializers.deserialize(json['${hydrateStateKey ?? clsStateNameWithoutNullCharacter}'], specifiedType: const ${getFullType(clsStateType)})! as $clsStateNameWithoutNullCharacter;
         } catch (e) {
-          _logger.severe('fromJson->${hydrateStateKey??clsStateNameWithoutNullCharacter}: \$e');
+          _logger.severe('fromJson->${hydrateStateKey ?? clsStateNameWithoutNullCharacter}: \$e');
           return null;
         }
             ''');
@@ -281,25 +281,27 @@ mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
         if (json.containsKey('${field.name}')) {
           try {
           ''');
+          final deserializedCode = '''
+              serializers.deserialize(json['${field.displayName}'], specifiedType: const ${getFullType(getter.returnType)})! as ${getter.returnType.getDisplayString(
+            withNullability: false,
+          )}''';
+          sb.writeln('''
+            if (json['${field.displayName}'] == null) {
+              b.${field.displayName} = null;
+            } else {
+          ''');
           if (returnTypeElement is ClassElement &&
               returnTypeElement.isBuiltValue) {
             sb.writeln('''
-          if (json['${field.displayName}'] == null) {
-            b.${field.displayName} = null;
-          } else {
-            b.${field.displayName}.replace(serializers.deserialize(json['${field.displayName}'], specifiedType: const ${getFullType(getter.returnType)})! as ${getter.returnType.getDisplayString(
-              withNullability: false,
-            )});
-          }
-          ''');
+              b.${field.displayName}.replace($deserializedCode);
+              ''');
           } else {
             sb.writeln('''
-            b.${field.displayName} = json['${field.displayName}'] as ${getter.returnType.getDisplayString(
-              withNullability: true,
-            )};
+              b.${field.displayName} = $deserializedCode;
           ''');
           }
           sb.writeln('''
+            }
           } catch (e) {
             _logger.severe('fromJson->${field.displayName}: \$e');
           }

@@ -1,3 +1,6 @@
+## 1.3.1
+- enum support fixed for hydration.
+
 ## 1.3.0
 - read hydrateStateKey from @BlocGen.
 
