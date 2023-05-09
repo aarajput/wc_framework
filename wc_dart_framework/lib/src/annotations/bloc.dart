@@ -8,9 +8,11 @@ class BlocUpdateField {
 @Target({TargetKind.classType})
 class BlocGen {
   final bool hydrateState;
+  final String? hydrateStateKey;
 
   const BlocGen({
     this.hydrateState = false,
+    this.hydrateStateKey,
   });
 }
 

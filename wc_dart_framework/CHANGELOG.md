@@ -1,3 +1,6 @@
+## 1.3.0
+- hydrateStateKey added in @BlocGen.
+
 ## 1.2.0
 - hydrateState added in @BlocGen.
 

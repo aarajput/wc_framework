@@ -19,6 +19,11 @@ class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
       return null;
     }
     final isHydrateState = annotation.read('hydrateState').boolValue;
+    final hydrateStateKeyAnnotation = annotation.read('hydrateStateKey');
+    final hydrateStateKey = hydrateStateKeyAnnotation.isString
+        ? hydrateStateKeyAnnotation.stringValue
+        : null;
+    print('hydrateStateKey: $hydrateStateKey');
     final superTypes = cls.allSupertypes;
     final index = superTypes.indexWhere(
       (final type) => type
@@ -232,9 +237,9 @@ mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
       if (isHydrateState) {
         sb.writeln('''
         try {
-          json['$clsStateNameWithoutNullCharacter'] = serializers.serialize(state, specifiedType: const ${getFullType(clsStateType)});
+          json['${hydrateStateKey ?? clsStateNameWithoutNullCharacter}'] = serializers.serialize(state, specifiedType: const ${getFullType(clsStateType)});
         } catch (e) {
-          _logger.severe('toJson->$clsStateNameWithoutNullCharacter: \$e');
+          _logger.severe('toJson->${hydrateStateKey ?? clsStateNameWithoutNullCharacter}: \$e');
         }
           ''');
       } else {
@@ -260,9 +265,9 @@ mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
       if (isHydrateState) {
         sb.writeln('''
         try {
-          return serializers.deserialize(json['$clsStateNameWithoutNullCharacter'], specifiedType: const ${getFullType(clsStateType)})! as $clsStateNameWithoutNullCharacter;
+          return serializers.deserialize(json['${hydrateStateKey??clsStateNameWithoutNullCharacter}'], specifiedType: const ${getFullType(clsStateType)})! as $clsStateNameWithoutNullCharacter;
         } catch (e) {
-          _logger.severe('fromJson->$clsStateNameWithoutNullCharacter: \$e');
+          _logger.severe('fromJson->${hydrateStateKey??clsStateNameWithoutNullCharacter}: \$e');
           return null;
         }
             ''');

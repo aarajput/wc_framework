@@ -16,7 +16,8 @@ part 'bloc_example_bloc.bloc.g.dart';
 final _logger = Logger('bloc_example_bloc.dart');
 
 @BlocGen(
-  hydrateState: false,
+  hydrateState: true,
+  hydrateStateKey: 'blocExampleState',
 )
 class BlocExampleBloc extends Cubit<BlocExampleState>
     with HydratedMixin, _BlocExampleBlocHydratedMixin, _BlocExampleBlocMixin {

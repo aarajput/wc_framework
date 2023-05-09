@@ -22,6 +22,11 @@ dependency_overrides:
   flutter_lints: 2.0.1
   wc_dart_framework:
     path: ../
+  hydrated_bloc:
+    git:
+      url: https://github.com/aarajput/bloc.git
+      path: packages/hydrated_bloc
+
 
 dev_dependencies:
   wc_dart_framework_generator:
