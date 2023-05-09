@@ -15,8 +15,10 @@ part 'bloc_example_bloc.bloc.g.dart';
 
 final _logger = Logger('bloc_example_bloc.dart');
 
-@BlocGen()
-class BlocExampleBloc extends Cubit<BlocExampleState?>
+@BlocGen(
+  hydrateState: false,
+)
+class BlocExampleBloc extends Cubit<BlocExampleState>
     with HydratedMixin, _BlocExampleBlocHydratedMixin, _BlocExampleBlocMixin {
   BlocExampleBloc() : super(BlocExampleState()) {
     hydrate();
@@ -27,7 +29,7 @@ class BlocExampleBloc extends Cubit<BlocExampleState?>
 
   void updateData() {
     emit(
-      state?.rebuild(
+      state.rebuild(
         (b) {
           b.value1 = 'val1';
           b.value2 = 2;

@@ -1,3 +1,6 @@
+## 1.2.0
+- read hydrateState from @BlocGen.
+
 ## 1.1.3
 - null check added in fromJson.
 

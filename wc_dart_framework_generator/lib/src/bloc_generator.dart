@@ -18,7 +18,7 @@ class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
     if (cls is! ClassElement) {
       return null;
     }
-
+    final isHydrateState = annotation.read('hydrateState').boolValue;
     final superTypes = cls.allSupertypes;
     final index = superTypes.indexWhere(
       (final type) => type
@@ -33,7 +33,10 @@ class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
       );
     }
     final clsMetaTags = cls.metadata
-        .where((m) => m.element?.displayName != 'BlocGen')
+        .where((m) => ![
+              'BlocGen',
+              'BlocHydratedState',
+            ].contains(m.element?.displayName))
         .map(
           (final m) => m.toSource(),
         )
@@ -42,7 +45,8 @@ class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
     if (superType.typeArguments.isEmpty) {
       return null;
     }
-    final clsState = superType.typeArguments.first.element;
+    final clsStateType = superType.typeArguments.first;
+    final clsState = clsStateType.element;
     if (clsState is! ClassElement) {
       return null;
     }
@@ -183,16 +187,23 @@ mixin _${cls.displayName}Mixin on Cubit<$clsStateName> {
     // creating bloc-extension ---- end
 
     // creating bloc-hydration ---- start
-    final hydratedFields = fields.where(
-      (field) {
-        final getter = field.getter!;
-        if (!getter.hasAnnotation('BlocHydratedField')) {
-          return false;
-        }
-        return true;
-      },
-    );
-    if (hydratedFields.isNotEmpty) {
+    final hydratedFields = isHydrateState
+        ? <FieldElement>[]
+        : fields.where(
+            (field) {
+              final getter = field.getter!;
+              if (!getter.hasAnnotation('BlocHydratedField')) {
+                return false;
+              }
+              return true;
+            },
+          ).toList();
+    if (hydratedFields.isNotEmpty || isHydrateState) {
+      if (!isHydrateState && isClsStateNullable) {
+        throw ArgumentError(
+          'BlocHydratedField is not supported for nullable state',
+        );
+      }
       sb.writeln('''
 mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
     ''');
@@ -201,14 +212,6 @@ mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
       Map<String, dynamic>? toJson($clsStateName state) {
           final json = <String, dynamic>{};
         ''');
-      if (isClsStateNullable) {
-        sb.writeln('''
-          if (state==null) {
-            return json;
-          }
-          ''');
-      }
-
       String getFullType(DartType type) {
         final typeName = type.element!.displayName;
         String specifiedType;
@@ -226,15 +229,25 @@ mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
         return specifiedType;
       }
 
-      for (final field in hydratedFields) {
-        final getter = field.getter!;
+      if (isHydrateState) {
         sb.writeln('''
+        try {
+          json['$clsStateNameWithoutNullCharacter'] = serializers.serialize(state, specifiedType: const ${getFullType(clsStateType)});
+        } catch (e) {
+          _logger.severe('toJson->$clsStateNameWithoutNullCharacter: \$e');
+        }
+          ''');
+      } else {
+        for (final field in hydratedFields) {
+          final getter = field.getter!;
+          sb.writeln('''
         try {
           json['${field.displayName}'] = serializers.serialize(state.${field.displayName}, specifiedType: const ${getFullType(getter.returnType)});
         }catch (e) {
           _logger.severe('toJson->${field.displayName}: \$e');
         }
           ''');
+        }
       }
       sb.writeln('''
         return json;
@@ -242,46 +255,60 @@ mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
         ''');
       sb.writeln('''
       @override
-      $clsStateName fromJson(Map<String, dynamic> json) {
-        final b = ${clsStateNameWithoutNullCharacter}Builder();
+      $clsStateNameWithoutNullCharacter? fromJson(Map<String, dynamic> json) {
         ''');
-      for (final field in hydratedFields) {
-        final getter = field.getter!;
-        final returnTypeElement = getter.returnType.element;
+      if (isHydrateState) {
         sb.writeln('''
+        try {
+          return serializers.deserialize(json['$clsStateNameWithoutNullCharacter'], specifiedType: const ${getFullType(clsStateType)})! as $clsStateNameWithoutNullCharacter;
+        } catch (e) {
+          _logger.severe('fromJson->$clsStateNameWithoutNullCharacter: \$e');
+          return null;
+        }
+            ''');
+      } else {
+        sb.writeln('''
+          final b = state.toBuilder();
+            ''');
+        for (final field in hydratedFields) {
+          final getter = field.getter!;
+          final returnTypeElement = getter.returnType.element;
+          sb.writeln('''
         if (json.containsKey('${field.name}')) {
           try {
           ''');
-        if (returnTypeElement is ClassElement &&
-            returnTypeElement.isBuiltValue) {
-          sb.writeln('''
+          if (returnTypeElement is ClassElement &&
+              returnTypeElement.isBuiltValue) {
+            sb.writeln('''
           if (json['${field.displayName}'] == null) {
             b.${field.displayName} = null;
           } else {
             b.${field.displayName}.replace(serializers.deserialize(json['${field.displayName}'], specifiedType: const ${getFullType(getter.returnType)})! as ${getter.returnType.getDisplayString(
-            withNullability: false,
-          )});
+              withNullability: false,
+            )});
           }
           ''');
-        } else {
-          sb.writeln('''
+          } else {
+            sb.writeln('''
             b.${field.displayName} = json['${field.displayName}'] as ${getter.returnType.getDisplayString(
-            withNullability: true,
-          )};
+              withNullability: true,
+            )};
           ''');
-        }
-        sb.writeln('''
+          }
+          sb.writeln('''
           } catch (e) {
             _logger.severe('fromJson->${field.displayName}: \$e');
           }
         }
           ''');
+        }
+        sb.writeln('''
+          return b.build();
+        ''');
       }
       sb.writeln('''
-        return b.build();
       }
         ''');
-
       sb.writeln('''
 }
     ''');

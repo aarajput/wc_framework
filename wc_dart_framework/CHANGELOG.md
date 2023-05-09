@@ -1,3 +1,6 @@
+## 1.2.0
+- hydrateState added in @BlocGen.
+
 ## 1.1.0
 - BlocHydratedField added.
 - LoggingUtils added.

@@ -5,12 +5,21 @@ class BlocUpdateField {
   const BlocUpdateField();
 }
 
+@Target({TargetKind.classType})
+class BlocGen {
+  final bool hydrateState;
+
+  const BlocGen({
+    this.hydrateState = false,
+  });
+}
+
 @Target({TargetKind.getter})
 class BlocHydratedField {
   const BlocHydratedField();
 }
 
 @Target({TargetKind.classType})
-class BlocGen {
-  const BlocGen();
+class BlocHydratedState {
+  const BlocHydratedState();
 }
