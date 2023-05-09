@@ -268,7 +268,7 @@ mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
             ''');
       } else {
         sb.writeln('''
-          final b = state.toBuilder();
+          final b = blocState.toBuilder();
             ''');
         for (final field in hydratedFields) {
           final getter = field.getter!;

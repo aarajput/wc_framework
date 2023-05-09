@@ -1,3 +1,6 @@
+## 1.2.1
+- state is replaced with blocState inside fromJson.
+
 ## 1.2.0
 - read hydrateState from @BlocGen.
 
