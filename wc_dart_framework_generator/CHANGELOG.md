@@ -1,3 +1,6 @@
+## 1.3.2
+- null check fixed in hydrated state.
+
 ## 1.3.1
 - enum support fixed for hydration.
 

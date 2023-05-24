@@ -264,7 +264,7 @@ mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
       if (isHydrateState) {
         sb.writeln('''
         try {
-          return serializers.deserialize(json['${hydrateStateKey ?? clsStateNameWithoutNullCharacter}'], specifiedType: const ${getFullType(clsStateType)})! as $clsStateNameWithoutNullCharacter;
+          return serializers.deserialize(json['${hydrateStateKey ?? clsStateNameWithoutNullCharacter}'], specifiedType: const ${getFullType(clsStateType)}) as $clsStateName;
         } catch (e) {
           _logger.severe('fromJson->${hydrateStateKey ?? clsStateNameWithoutNullCharacter}: \$e');
           return null;
@@ -282,7 +282,7 @@ mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
           try {
           ''');
           final deserializedCode = '''
-              serializers.deserialize(json['${field.displayName}'], specifiedType: const ${getFullType(getter.returnType)})! as ${getter.returnType.getDisplayString(
+              serializers.deserialize(json['${field.displayName}'], specifiedType: const ${getFullType(getter.returnType)}) as ${getter.returnType.getDisplayString(
             withNullability: false,
           )}''';
           sb.writeln('''
