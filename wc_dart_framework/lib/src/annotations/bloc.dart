@@ -17,6 +17,11 @@ class BlocGen {
 }
 
 @Target({TargetKind.getter})
+class BlocGenIgnoreFieldSelector {
+  const BlocGenIgnoreFieldSelector();
+}
+
+@Target({TargetKind.getter})
 class BlocHydratedField {
   const BlocHydratedField();
 }

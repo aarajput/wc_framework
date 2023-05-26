@@ -52,5 +52,6 @@ abstract class BlocExampleState
   BuiltList<BuiltMap<String, BlocExampleData>> get value11;
 
   @BlocHydratedField()
+  @BlocGenIgnoreFieldSelector()
   BlocExampleEnum? get value12;
 }

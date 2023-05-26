@@ -110,6 +110,9 @@ class ${cls.displayName}Selector<T> extends StatelessWidget {
 
     for (final field in fields) {
       final getter = field.getter!;
+      if (getter.hasAnnotation('BlocGenIgnoreFieldSelector')) {
+        continue;
+      }
       String returnTypeDisplayNameWithNullability =
           '${getter.returnType}${isClsStateNullable && !getter.isReturnTypeNullable ? '?' : ''}';
       sb.writeln('''

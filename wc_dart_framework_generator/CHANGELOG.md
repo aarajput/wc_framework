@@ -1,3 +1,6 @@
+## 1.4.0
+- @BlocGenIgnoreFieldSelector support added.
+
 ## 1.3.2
 - null check fixed in hydrated state.
 

@@ -1,3 +1,6 @@
+## 1.4.0
+- @BlocGenIgnoreFieldSelector added.
+
 ## 1.3.0
 - hydrateStateKey added in @BlocGen.
 
