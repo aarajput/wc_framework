@@ -127,6 +127,7 @@ class ${cls.displayName}Selector<T> extends StatelessWidget {
       key: key,
       selector: (state) => state$clsStateNullableEscapeCharacter.${field.displayName},
       builder: (value) => builder(value),
+      bloc: bloc,
     );
   }
           ''');

@@ -1,3 +1,6 @@
+## 1.5.1
+- Passing bloc in BlocSelect crash fixed.
+
 ## 1.5.0
 - In BlocSelector you can pass bloc.
 - Packages updated
