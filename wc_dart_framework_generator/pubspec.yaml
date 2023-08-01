@@ -1,6 +1,6 @@
 name: wc_dart_framework_generator
 description: Code generator for wc_dart_framework
-version: 1.4.0
+version: 1.5.0
 homepage: https://github.com/aarajput/wc_framework/tree/main/wc_dart_framework_generator
 repository: https://github.com/aarajput/wc_framework
 issue_tracker: https://github.com/aarajput/wc_framework/issues
@@ -20,4 +20,4 @@ dependencies:
   collection: ^1.17.0
 
 dev_dependencies:
-  flutter_lints: 2.0.1
+  flutter_lints: 2.0.2

@@ -1,4 +1,4 @@
 generate-code:
-  build: flutter pub run build_runner build
-  watch: flutter pub run build_runner watch
-  rebuild: flutter pub run build_runner build --delete-conflicting-outputs
+  build: dart run build_runner build
+  watch: dart run build_runner watch
+  rebuild: dart run build_runner build --delete-conflicting-outputs

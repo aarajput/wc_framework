@@ -100,11 +100,13 @@ $clsMetaTags
 class ${cls.displayName}Selector<T> extends StatelessWidget {
   final BlocWidgetSelector<$clsStateName, T> selector;
   final Widget Function(T state) builder;
+  final ${cls.displayName}? bloc;
 
   const ${cls.displayName}Selector({
     final Key? key,
     required this.selector,
     required this.builder,
+    this.bloc,
   }) : super(key: key);
       ''');
 
@@ -119,6 +121,7 @@ class ${cls.displayName}Selector<T> extends StatelessWidget {
   static ${cls.displayName}Selector<$returnTypeDisplayNameWithNullability> ${field.displayName}({
     final Key? key,
     required Widget Function($returnTypeDisplayNameWithNullability ${field.displayName}) builder,
+    final ${cls.displayName}? bloc,
   }) {
     return ${cls.displayName}Selector(
       key: key,
@@ -135,6 +138,7 @@ class ${cls.displayName}Selector<T> extends StatelessWidget {
     return BlocSelector<${cls.displayName}, $clsStateName, T>(
       selector: selector,
       builder: (_,value) => builder(value),
+      bloc:bloc,
     );
   }
 }

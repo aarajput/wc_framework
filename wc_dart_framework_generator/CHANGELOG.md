@@ -1,3 +1,7 @@
+## 1.5.0
+- In BlocSelector you can pass bloc.
+- Packages updated
+
 ## 1.4.0
 - @BlocGenIgnoreFieldSelector support added.
 
