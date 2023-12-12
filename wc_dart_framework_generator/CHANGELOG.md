@@ -1,3 +1,6 @@
+## 1.6.0
+- generateFieldSelectors field support added in BlocGen annotation
+
 ## 1.5.1
 - Passing bloc in BlocSelect crash fixed.
 

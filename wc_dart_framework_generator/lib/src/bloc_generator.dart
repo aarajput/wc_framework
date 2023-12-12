@@ -23,6 +23,8 @@ class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
     final hydrateStateKey = hydrateStateKeyAnnotation.isString
         ? hydrateStateKeyAnnotation.stringValue
         : null;
+    final generateFieldSelectors =
+        annotation.read('generateFieldSelectors').boolValue;
     final superTypes = cls.allSupertypes;
     final index = superTypes.indexWhere(
       (final type) => type
@@ -109,15 +111,15 @@ class ${cls.displayName}Selector<T> extends StatelessWidget {
     this.bloc,
   }) : super(key: key);
       ''');
-
-    for (final field in fields) {
-      final getter = field.getter!;
-      if (getter.hasAnnotation('BlocGenIgnoreFieldSelector')) {
-        continue;
-      }
-      String returnTypeDisplayNameWithNullability =
-          '${getter.returnType}${isClsStateNullable && !getter.isReturnTypeNullable ? '?' : ''}';
-      sb.writeln('''
+    if (generateFieldSelectors) {
+      for (final field in fields) {
+        final getter = field.getter!;
+        if (getter.hasAnnotation('BlocGenIgnoreFieldSelector')) {
+          continue;
+        }
+        String returnTypeDisplayNameWithNullability =
+            '${getter.returnType}${isClsStateNullable && !getter.isReturnTypeNullable ? '?' : ''}';
+        sb.writeln('''
   static ${cls.displayName}Selector<$returnTypeDisplayNameWithNullability> ${field.displayName}({
     final Key? key,
     required Widget Function($returnTypeDisplayNameWithNullability ${field.displayName}) builder,
@@ -131,6 +133,7 @@ class ${cls.displayName}Selector<T> extends StatelessWidget {
     );
   }
           ''');
+      }
     }
 
     sb.writeln('''

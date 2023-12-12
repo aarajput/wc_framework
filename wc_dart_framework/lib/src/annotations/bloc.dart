@@ -9,10 +9,12 @@ class BlocUpdateField {
 class BlocGen {
   final bool hydrateState;
   final String? hydrateStateKey;
+  final bool generateFieldSelectors;
 
   const BlocGen({
     this.hydrateState = false,
     this.hydrateStateKey,
+    this.generateFieldSelectors = true,
   });
 }
 

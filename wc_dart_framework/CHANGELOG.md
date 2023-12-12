@@ -1,3 +1,6 @@
+## 1.6.0
+- generateFieldSelectors field added in BlocGen annotation
+
 ## 1.5.0
 - In BlocSelector you can pass bloc.
 - Packages updated
