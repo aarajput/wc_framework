@@ -1,3 +1,6 @@
+## 1.6.1
+- blocState is replaced with state in hydration code generation
+
 ## 1.6.0
 - generateFieldSelectors field support added in BlocGen annotation
 
