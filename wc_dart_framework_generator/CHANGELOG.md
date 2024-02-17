@@ -1,3 +1,6 @@
+## 1.7.0
+- packages updated
+
 ## 1.6.1
 - blocState is replaced with state in hydration code generation
 

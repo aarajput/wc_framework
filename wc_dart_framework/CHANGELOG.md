@@ -1,3 +1,6 @@
+## 1.7.0
+- packages updated
+
 ## 1.6.0
 - generateFieldSelectors field added in BlocGen annotation
 
