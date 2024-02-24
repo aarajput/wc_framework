@@ -163,13 +163,13 @@ mixin _${cls.displayName}Mixin on Cubit<$clsStateName> {
       sb.writeln('''
   @mustCallSuper
   void update${getter.displayName.toPascalCase()}(final ${getter.returnType} ${field.displayName}) {
-    if(state$clsStateNullableEscapeCharacter.${field.displayName} == ${field.displayName}){
+    if(this.state$clsStateNullableEscapeCharacter.${field.displayName} == ${field.displayName}){
       return;
     }
         ''');
       if (returnType is ClassElement && returnType.isBuiltValue) {
         sb.writeln('''
-    emit(state$clsStateNullableEscapeCharacter.rebuild((final b) {
+    emit(this.state$clsStateNullableEscapeCharacter.rebuild((final b) {
         ''');
         if (isReturnTypeNullable) {
           sb.writeln('''
