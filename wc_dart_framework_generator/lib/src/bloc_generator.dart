@@ -186,7 +186,7 @@ mixin _${cls.displayName}Mixin on Cubit<$clsStateName> {
         ''');
       } else {
         sb.writeln('''
-    emit(state$clsStateNullableEscapeCharacter.rebuild((final b) => b.${field.displayName} = ${field.displayName}));
+    emit(this.state$clsStateNullableEscapeCharacter.rebuild((final b) => b.${field.displayName} = ${field.displayName}));
         ''');
       }
       sb.writeln('''

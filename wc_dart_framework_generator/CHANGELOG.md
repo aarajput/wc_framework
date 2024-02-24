@@ -1,3 +1,6 @@
+## 1.7.2
+- bloc update generator issue fixed if field name is "state"
+
 ## 1.7.1
 - bloc update generator issue fixed if field name is "state"
 
