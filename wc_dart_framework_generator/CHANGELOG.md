@@ -1,3 +1,6 @@
+## 1.8.0
+- Bloc generator now supports all classes that extends BlocBase.
+
 ## 1.7.2
 - bloc update generator issue fixed if field name is "state"
 

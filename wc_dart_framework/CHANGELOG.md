@@ -1,3 +1,6 @@
+## 1.8.0
+- Bloc generator now supports all classes that extends BlocBase.
+
 ## 1.7.0
 - packages updated
 
