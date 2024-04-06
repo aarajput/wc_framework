@@ -16,7 +16,7 @@ dependencies:
   change_case: ^2.0.0
   path: ^1.8.2
   glob: ^2.0.1
-  wc_dart_framework: ^1.6.0
+  wc_dart_framework: ^1.8.0
   collection: ^1.17.0
 
 dev_dependencies:
