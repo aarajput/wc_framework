@@ -19,6 +19,7 @@ abstract class BlocExampleState
   static void _initialize(final BlocExampleStateBuilder b) => b;
 
   @BlocHydratedField()
+  @BlocUpdateField()
   String? get value1;
 
   @BlocHydratedField()

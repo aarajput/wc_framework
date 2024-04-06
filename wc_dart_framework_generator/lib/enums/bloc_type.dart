@@ -1,0 +1,4 @@
+enum BlocType {
+  bloc,
+  cubit,
+}

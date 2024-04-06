@@ -5,6 +5,7 @@ import 'package:build/build.dart';
 import 'package:change_case/change_case.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:wc_dart_framework/wc_dart_framework.dart';
+import 'package:wc_dart_framework_generator/enums/bloc_type.dart';
 import 'package:wc_dart_framework_generator/extensions/element.dart';
 
 class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
@@ -27,15 +28,17 @@ class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
         annotation.read('generateFieldSelectors').boolValue;
     final superTypes = cls.allSupertypes;
     final index = superTypes.indexWhere(
-      (final type) => type
-          .getDisplayString(
-            withNullability: false,
-          )
-          .startsWith('Cubit<'),
+      (final type) {
+        final displayName = type.getDisplayString(
+          withNullability: false,
+        );
+        return displayName.startsWith('Cubit<') ||
+            displayName.startsWith('BlocBase<');
+      },
     );
     if (index.isNegative) {
       throw ArgumentError(
-        '@BlocGen can only be on classes that are extended from Cubit',
+        '@BlocGen can only be on classes that are extended from Cubit or Bloc',
       );
     }
     final clsMetaTags = cls.metadata
@@ -48,6 +51,13 @@ class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
         )
         .join('\n');
     final superType = superTypes[index];
+    final blocType = superType
+            .getDisplayString(
+              withNullability: false,
+            )
+            .startsWith('Cubit<')
+        ? BlocType.cubit
+        : BlocType.bloc;
     if (superType.typeArguments.isEmpty) {
       return null;
     }
@@ -162,7 +172,7 @@ mixin _${cls.displayName}Mixin on Cubit<$clsStateName> {
       bool isReturnTypeNullable = getter.returnType.toString().endsWith('?');
       sb.writeln('''
   @mustCallSuper
-  void update${getter.displayName.toPascalCase()}(final ${getter.returnType} ${field.displayName}) {
+  void ${blocType == BlocType.cubit ? '' : '_'}update${getter.displayName.toPascalCase()}(final ${getter.returnType} ${field.displayName}) {
     if(this.state$clsStateNullableEscapeCharacter.${field.displayName} == ${field.displayName}){
       return;
     }
