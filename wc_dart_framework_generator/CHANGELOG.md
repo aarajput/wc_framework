@@ -1,3 +1,6 @@
+## 1.8.1
+- enum generation for custom fields is fixed.
+
 ## 1.8.0
 - Bloc generator now supports all classes that extends BlocBase.
 

@@ -24,8 +24,14 @@ class EnumGenerator extends GeneratorForAnnotation<EnumGen> {
     } else if (element is ClassElement &&
         element.supertype?.getDisplayString(withNullability: false) ==
             'EnumClass') {
+      final className = element.name;
       for (final field in element.fields) {
-        if (field.isStatic && field.isConst) {
+        final fieldReturnTypeName = field.getter?.returnType.getDisplayString(
+          withNullability: false,
+        );
+        if (field.isStatic &&
+            field.isConst &&
+            fieldReturnTypeName == className) {
           fieldNames.add(field.displayName);
         }
       }

@@ -4,14 +4,13 @@ import 'package:built_value/serializer.dart';
 import 'package:wc_dart_framework/wc_dart_framework.dart';
 
 part 'enum_example.enum.g.dart';
-
 part 'enum_example.g.dart';
 
 @EnumGen()
 enum EnumExample {
-  value1,
-  value2,
-  value3,
+  valueE1,
+  valueE2,
+  valueE3,
 }
 
 @EnumGen()
@@ -26,6 +25,11 @@ class BuiltEnumExample extends EnumClass {
   static const BuiltEnumExample value1 = _$value1;
   static const BuiltEnumExample value2 = _$value2;
   static const BuiltEnumExample value3 = _$value3;
+
+  static const someValues = [
+    value1,
+    value2,
+  ];
 
   const BuiltEnumExample._(String name) : super(name);
 }
