@@ -1,3 +1,6 @@
+## 1.8.2
+- buildWhen added in BlocBuilder.
+
 ## 1.8.1
 - enum generation for custom fields is fixed.
 

@@ -89,16 +89,19 @@ class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
     sb.writeln('''
 $clsMetaTags
 class ${cls.displayName}Builder extends StatelessWidget {
+  final BlocBuilderCondition<$clsStateName>? buildWhen;
   final BlocWidgetBuilder<$clsStateName> builder;
 
   const ${cls.displayName}Builder({
     Key? key,
+    this.buildWhen,
     required this.builder,
   }) : super(key: key);
 
   @override
   Widget build(final BuildContext context) {
     return BlocBuilder<${cls.displayName}, $clsStateName>(
+      buildWhen: buildWhen,
       builder: builder,
     );
   }
