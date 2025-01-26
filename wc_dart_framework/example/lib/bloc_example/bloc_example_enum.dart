@@ -15,5 +15,5 @@ class BlocExampleEnum extends EnumClass {
   static const BlocExampleEnum e1 = _$e1;
   static const BlocExampleEnum e2 = _$e2;
 
-  const BlocExampleEnum._(String name) : super(name);
+  const BlocExampleEnum._(super.name);
 }

@@ -162,10 +162,40 @@ class ${cls.displayName}Selector<T> extends StatelessWidget {
       ''');
     // creating bloc-selector ---- end
 
-    // creating bloc-extension ---- start
+    // creating bloc-mixing ---- start
     sb.writeln('''
-mixin _${cls.displayName}Mixin on Cubit<$clsStateName> {
+mixin _\$${cls.displayName}Mixin on Cubit<$clsStateName> {
       ''');
+    // bloc-mixing listenFields ---- start
+    sb.writeln('void _listenFields(){');
+    for (final field in fields) {
+      final getter = field.getter!;
+      if (!getter.hasAnnotation('BlocListenField')) {
+        continue;
+      }
+      final getterDisplayName = getter.displayName;
+      sb.writeln('''
+    BlocBasicListener<${cls.displayName}, $clsStateName>(
+      bloc: this,
+      listenWhen: (prev, next) => prev.$getterDisplayName != next.$getterDisplayName,
+    ).stream.listen((_) => _\$onUpdate${getterDisplayName.toPascalCase()}());
+      ''');
+    }
+    sb.writeln('}');
+    // creating onUpdate methods
+    for (final field in fields) {
+      final getter = field.getter!;
+      if (!getter.hasAnnotation('BlocListenField')) {
+        continue;
+      }
+      sb.writeln('''
+      @protected
+      void _\$onUpdate${getter.displayName.toPascalCase()}() {}
+      ''');
+    }
+    // bloc-mixing listenFields ---- end
+
+    // bloc-mixing update fields ---- start
     for (final field in fields) {
       final getter = field.getter!;
       if (!getter.hasAnnotation('BlocUpdateField')) {
@@ -176,9 +206,6 @@ mixin _${cls.displayName}Mixin on Cubit<$clsStateName> {
       sb.writeln('''
   @mustCallSuper
   void ${blocType == BlocType.cubit ? '' : '_'}update${getter.displayName.toPascalCase()}(final ${getter.returnType} ${field.displayName}) {
-    if(this.state$clsStateNullableEscapeCharacter.${field.displayName} == ${field.displayName}){
-      return;
-    }
         ''');
       if (returnType is ClassElement && returnType.isBuiltValue) {
         sb.writeln('''
@@ -202,17 +229,11 @@ mixin _${cls.displayName}Mixin on Cubit<$clsStateName> {
     emit(this.state$clsStateNullableEscapeCharacter.rebuild((final b) => b.${field.displayName} = ${field.displayName}));
         ''');
       }
-      sb.writeln('''
-        \$onUpdate${getter.displayName.toPascalCase()}();
-  }   
-      @protected
-      void \$onUpdate${getter.displayName.toPascalCase()}() {}
-      ''');
+      sb.writeln('}');
     }
-    sb.writeln('''
-}
-      ''');
-    // creating bloc-extension ---- end
+    // bloc-mixing update fields ---- end
+    sb.writeln('}');
+    // creating bloc-mixing ---- end
 
     // creating bloc-hydration ---- start
     final hydratedFields = isHydrateState
@@ -233,7 +254,7 @@ mixin _${cls.displayName}Mixin on Cubit<$clsStateName> {
         );
       }
       sb.writeln('''
-mixin _${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
+mixin _\$${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
     ''');
       sb.writeln('''
       @override

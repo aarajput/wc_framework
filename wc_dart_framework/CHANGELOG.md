@@ -1,3 +1,6 @@
+## 1.9.0
+- Breaking: Added @BlocListenField. Now _$onUpdateField will only generate if @BlocListenField is used.
+
 ## 1.8.0
 - Bloc generator now supports all classes that extends BlocBase.
 

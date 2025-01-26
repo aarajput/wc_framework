@@ -31,5 +31,5 @@ class BuiltEnumExample extends EnumClass {
     value2,
   ];
 
-  const BuiltEnumExample._(String name) : super(name);
+  const BuiltEnumExample._(super.name);
 }

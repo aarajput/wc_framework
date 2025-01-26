@@ -1,3 +1,7 @@
+## 1.9.0
+- Breaking: added $ in generate class names.
+- Breaking: Add support for @BlocListenField. Now _$onUpdateField will only generate if @BlocListenField is used.
+
 ## 1.8.2
 - buildWhen added in BlocBuilder.
 

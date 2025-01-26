@@ -9,7 +9,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LoggingUtils.initialize();
   HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: await getTemporaryDirectory(),
+    storageDirectory: HydratedStorageDirectory(
+      (await getTemporaryDirectory()).path,
+    ),
   );
   runApp(const MyApp());
 }

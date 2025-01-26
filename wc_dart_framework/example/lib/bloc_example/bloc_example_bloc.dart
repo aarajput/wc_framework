@@ -21,13 +21,16 @@ final _logger = Logger('bloc_example_bloc.dart');
   hydrateStateKey: 'blocExampleState',
 )
 class BlocExampleBloc extends Cubit<BlocExampleState>
-    with HydratedMixin, _BlocExampleBlocHydratedMixin, _BlocExampleBlocMixin {
+    with HydratedMixin, _BlocExampleBlocHydratedMixin, _$BlocExampleBlocMixin {
   BlocExampleBloc() : super(BlocExampleState()) {
     hydrate();
   }
 
   factory BlocExampleBloc.of(final BuildContext context) =>
       BlocProvider.of<BlocExampleBloc>(context);
+
+  @override
+  void _$onUpdateValue1() {}
 
   void updateData() {
     emit(

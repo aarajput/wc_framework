@@ -20,6 +20,7 @@ abstract class BlocExampleState
 
   @BlocHydratedField()
   @BlocUpdateField()
+  @BlocListenField()
   String? get value1;
 
   @BlocHydratedField()
