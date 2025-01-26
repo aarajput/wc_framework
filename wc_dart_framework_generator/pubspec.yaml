@@ -11,13 +11,13 @@ environment:
 
 dependencies:
   source_gen: ^2.0.0
-  analyzer: '>=6.9.0 <8.0.0'
-  build: ^2.0.0
+  analyzer: '>=7.0.0 <8.0.0'
+  build: ^2.3.1
   change_case: ^2.0.0
   path: ^1.8.2
   glob: ^2.0.1
   wc_dart_framework: ^1.9.0
-  collection: ^1.17.0
+  collection: ^1.15.0
 
 dev_dependencies:
   flutter_lints: 5.0.0

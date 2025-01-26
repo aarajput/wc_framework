@@ -1,3 +1,6 @@
+## 1.9.2
+- analyzer: '>=7.0.0 <8.0.0'
+
 ## 1.9.1
 - source_gen updated to 2.0.0
 
