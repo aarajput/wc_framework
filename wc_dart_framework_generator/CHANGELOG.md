@@ -1,3 +1,8 @@
+## 1.9.3
+- source_gen: '>=1.4.0 <3.0.0'
+- analyzer: '>=6.5.0 <8.0.0'
+- storagePrefix added for HydratedBloc
+
 ## 1.9.2
 - analyzer: '>=7.0.0 <8.0.0'
 

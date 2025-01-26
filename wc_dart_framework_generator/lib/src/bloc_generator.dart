@@ -255,8 +255,10 @@ mixin _\$${cls.displayName}Mixin on Cubit<$clsStateName> {
       }
       sb.writeln('''
 mixin _\$${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
-    ''');
-      sb.writeln('''
+
+      @override
+      String get storagePrefix => '${cls.displayName}';
+
       @override
       Map<String, dynamic>? toJson($clsStateName state) {
           final json = <String, dynamic>{};
