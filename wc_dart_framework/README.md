@@ -9,6 +9,10 @@ The `wc_dart_framework` package is designed to provide common code utilities for
 
 ---
 
+<details>
+
+<summary>AssetGen</summary>
+
 ### **AssetGen**
 
 Instead of manually referencing asset paths, `AssetGen` generates a class with static references to all assets within a specified folder structure.
@@ -51,7 +55,11 @@ Image.asset(SvgImages.IC_HOME); // 'assets/svgs/ic_home.svg'
 Image.asset(OtherImages.RED); // 'assets/others/red.jpeg'
 ```
 
----
+</details>
+
+<details>
+
+<summary>BlocGen</summary>
 
 ### BlocGen
 
@@ -105,7 +113,11 @@ ExampleBlocSelector.errorMessage(
 )
 ```
 
----
+</details>
+
+<details>
+
+<summary>BlocUpdateField</summary>
 
 ### BlocUpdateField
 
@@ -160,7 +172,42 @@ void _$onUpdateErrorMessage() {
 }
 ```
 
-#### Running the Code Generator
+</details>
+
+<details>
+
+<summary>EnumGen</summary>
+
+### EnumGen
+
+The `@EnumGen` annotation generates extension methods (`when`, `whenOrNull`, `maybeWhen`) for Dart enums, simplifying enum handling with type-safe, concise code. It reduces boilerplate and prevents compile-time errors by ensuring all enum cases are handled correctly.
+
+#### How It Works
+
+Add the `@EnumGen()` annotation to your enum.
+
+```dart
+import 'package:wc_dart_framework/wc_dart_framework.dart';
+
+part 'example_enum.enum.g.dart';
+
+@EnumGen()
+enum ExampleEnum { enum1, enum2 }
+```
+
+### Using The Generated Methods
+```dart
+final ExampleEnum en = ExampleEnum.enum1;
+
+en.when(
+  enum1: () => print('This is enum1'),
+  enum2: () => print('This is enum2'),
+);
+```
+
+</details>
+
+#### Installation and Running the Code Generator
 
 1. Add the `wc_dart_framework` package to your `pubspec.yaml` file:
 
