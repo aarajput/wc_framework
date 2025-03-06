@@ -1,4 +1,14 @@
-The `wc_dart_framework` package is designed to provide common code utilities for Flutter projects, reducing boilerplate code and improving development efficiency.
+# wc_dart_framework
+Dart framework to provide common code for projects
+
+[![pub package](https://img.shields.io/pub/v/wc_dart_framework.svg)](https://pub.dev/packages/wc_dart_framework)
+![Build Status](https://img.shields.io/badge/build-passing-green)
+![Unit Test](https://img.shields.io/badge/unit%20tests-passing-green)
+[![Author](https://img.shields.io/badge/author-wisecrab-green)](https://wisecrab.com)
+
+## About
+This package is designed to provide common code utilities for Flutter projects, reducing boilerplate code and improving development efficiency.
+
 
 ### **Features**
 
