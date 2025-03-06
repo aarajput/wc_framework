@@ -16,6 +16,7 @@ This package is designed to provide common code utilities for Flutter projects, 
 - [BlocGen](#blocgen)
 - [BlocUpdateField](#blocupdatefield)
 - [EnumGen](#enumgen)
+---
 
 ## How to use wc_dart_framework
 
@@ -129,13 +130,20 @@ ExampleBlocSelector.errorMessage(
 
 ---
 
-### BlocUpdateField
+### BlocGen Annotations
 
-The `@BlocUpdateField` annotation is used to auto-generate methods for updating state fields in BLoC classes.
+- [BlocUpdateField](#blocupdatefield)
+- [BlocListenField](#bloclistenfield)
+- [BlocGenIgnoreFieldSelector](#blocgenignorefieldselector)
+- [BlocHydratedField](#blochydratedield)
 
 #### **Note:**
 
->This annotation works only when the state class is implemented using `built_value`.  
+>These annotation works only when the state class is implemented using `built_value`. 
+
+### BlocUpdateField
+
+The `@BlocUpdateField` annotation is used to auto-generate methods for updating state fields in BLoC classes. 
  
 #### Example
 
@@ -169,7 +177,7 @@ bloc.updateErrorMessage('Hello Error!');
 
 ---
 
-### Listener Callbacks
+### BlocListenField
 
 Use the `@BlocListenField()` annotation to generate a callback method that is triggered when the field is updated.
 
@@ -187,6 +195,44 @@ Override the generated callback method in your BLoC:
 @override
 void _$onUpdateErrorMessage() {
   print('Error Message: ${state.errorMessage}');
+}
+```
+
+---
+
+### BlocGenIgnoreFieldSelector
+
+The `@BlocGenIgnoreFieldSelector` annotation prevents a field from being included in generated field selectors.
+
+#### Example
+
+```dart
+@BlocGenIgnoreFieldSelector()
+String get privateField;
+```
+
+---
+
+### BlocHydratedField
+
+The `@BlocHydratedField` annotation marks a field to be persisted in a hydrated state.
+
+#### Example
+
+```dart
+@BlocHydratedField()
+String get userToken;
+```
+
+When using `@BlocHydratedField`, ensure your BLoC class includes the `HydratedMixin` and `_$ExampleBlocHydratedMixin` mixins, and call `hydrate()` in the constructor to enable state hydration.
+
+```dart
+@BlocGen()
+class ExampleBloc extends Cubit<ExampleState> 
+    with _$ExampleBlocMixin, HydratedMixin, _$ExampleBlocHydratedMixin {
+  ExampleBloc() : super(ExampleState()) {
+    hydrate();
+  }
 }
 ```
 
