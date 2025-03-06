@@ -69,11 +69,13 @@ Image.asset(OtherImages.RED); // 'assets/others/red.jpeg'
 | includeFileNames  | `List<String>?` value specifying the list of files to include for generation.|
 | excludeFileNames  | `List<String>?` value specifying the list of files to exclude from generation.|
 
+---
+
 ### BlocGen
 
 `BlocGen` is a code generation tool that automates the creation of BLoC classes, selectors, and listener callbacks. It simplifies working with `flutter_bloc` and `built_value` by reducing boilerplate code.
 
-#### **How It Works**
+#### Example
 
 Add the `@BlocGen()` annotation to your BLoC class.
 
@@ -98,8 +100,6 @@ class ExampleState {
 }
 ```
 
-#### Using Generated Selectors
-
 Use the generated selectors to access state fields in a type-safe manner.
 
 ```dart
@@ -121,11 +121,23 @@ ExampleBlocSelector.errorMessage(
 )
 ```
 
+| Params        | Description   |
+| ------------- | ------------- |
+| hydrateState  | `bool` value determining whether to hydrate the state or not.|
+| hydrateStateKey  | `String?` value specifying the key to use for state hydration.|
+| generateFieldSelectors  | `bool` value determining whether to generate field selectors or not.|
+
+---
+
 ### BlocUpdateField
 
 The `@BlocUpdateField` annotation is used to auto-generate methods for updating state fields in BLoC classes.
 
-#### How It Works
+#### **Note:**
+
+>This annotation works only when the state class is implemented using `built_value`.  
+ 
+#### Example
 
 Use the `@BlocUpdateField()` annotation on the fields you want to generate update methods for.
 
@@ -139,7 +151,7 @@ abstract class ExampleState implements Built<ExampleState, ExampleStateBuilder> 
 }
 ```
 
-#### Add the Mixin to Your BLoC
+Add the Mixin to Your BLoC
 
 ```dart
 @BlocGen()
@@ -148,16 +160,20 @@ class ExampleBloc extends Cubit<ExampleState> with _$ExampleBlocMixin {
 }
 ```
 
-#### Using the Generated Update Methods
+Using the Generated Update Methods
 
 ```dart
 final bloc = BlocProvider.of<ExampleBloc>(context);
 bloc.updateErrorMessage('Hello Error!');
 ```
 
+---
+
 ### Listener Callbacks
 
 Use the `@BlocListenField()` annotation to generate a callback method that is triggered when the field is updated.
+
+#### Example
 
 ```dart
 @BlocUpdateField()
@@ -174,11 +190,13 @@ void _$onUpdateErrorMessage() {
 }
 ```
 
+---
+
 ### EnumGen
 
 The `@EnumGen` annotation generates extension methods (`when`, `whenOrNull`, `maybeWhen`) for Dart enums, simplifying enum handling with type-safe, concise code. It reduces boilerplate and prevents compile-time errors by ensuring all enum cases are handled correctly.
 
-#### How It Works
+#### Example
 
 Add the `@EnumGen()` annotation to your enum.
 
@@ -191,7 +209,8 @@ part 'example_enum.enum.g.dart';
 enum ExampleEnum { enum1, enum2 }
 ```
 
-### Using The Generated Methods
+Using The Generated Methods
+
 ```dart
 final ExampleEnum en = ExampleEnum.enum1;
 
@@ -200,6 +219,8 @@ en.when(
   enum2: () => print('This is enum2'),
 );
 ```
+---
+
 #### Installation and Running the Code Generator
 
 1. Add the `wc_dart_framework` package to your `pubspec.yaml` file:
@@ -221,3 +242,5 @@ dev_dependencies:
 ```bash
 dart run build_runner build
 ```
+
+---
