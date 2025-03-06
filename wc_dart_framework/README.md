@@ -10,26 +10,22 @@ Dart framework to provide common code for projects
 This package is designed to provide common code utilities for Flutter projects, reducing boilerplate code and improving development efficiency.
 
 
-### **Features**
+## Features
 
-- AssetGen
-- BlocGen
-- BlocUpdateField
-- EnumGen
+- [AssetGen](#assetgen)
+- [BlocGen](#blocgen)
+- [BlocUpdateField](#blocupdatefield)
+- [EnumGen](#enumgen)
 
----
+## How to use wc_dart_framework
 
-<details>
+### AssetGen
 
-<summary>AssetGen</summary>
+`AssetGen` generates a class with references to all assets within a specified folder structure, eliminating the need to manually reference asset paths.
 
-### **AssetGen**
+#### Example
 
-Instead of manually referencing asset paths, `AssetGen` generates a class with static references to all assets within a specified folder structure.
-
-#### **How It Works**
-
-Use the `@AssetGen` annotation to specify the paths to your asset directories.
+Use the `@AssetGen` annotation to specify the paths to your asset directories. This will generate a file named `images.asset.g.dart` containing the asset classes.
 
 ```dart
 import 'package:wc_dart_framework/wc_dart_framework.dart';
@@ -51,9 +47,6 @@ class _$SvgImages {} // Class for SVG assets
 // ignore: unused_element
 class _$OtherImages {}
 ```
-This will generate a file named `images.asset.g.dart` containing the asset classes.
-
-#### Use the Generated Classes
 
 Access your assets using the generated classes.
 
@@ -65,11 +58,16 @@ Image.asset(SvgImages.IC_HOME); // 'assets/svgs/ic_home.svg'
 Image.asset(OtherImages.RED); // 'assets/others/red.jpeg'
 ```
 
-</details>
+#### Parameters
 
-<details>
-
-<summary>BlocGen</summary>
+| Params        | Description   |
+| ------------- | ------------- |
+| path  | `String` value specifying the path to the assets folder.|
+| generatedClassName  | `String?` value specifying the name of the generated class.|
+| createStaticInstances  | `bool` value determining whether to generate static instances or not.|
+| showExtension  | `bool` value determining whether to include file extensions in the names.|
+| includeFileNames  | `List<String>?` value specifying the list of files to include for generation.|
+| excludeFileNames  | `List<String>?` value specifying the list of files to exclude from generation.|
 
 ### BlocGen
 
@@ -122,12 +120,6 @@ ExampleBlocSelector.errorMessage(
   },
 )
 ```
-
-</details>
-
-<details>
-
-<summary>BlocUpdateField</summary>
 
 ### BlocUpdateField
 
@@ -182,12 +174,6 @@ void _$onUpdateErrorMessage() {
 }
 ```
 
-</details>
-
-<details>
-
-<summary>EnumGen</summary>
-
 ### EnumGen
 
 The `@EnumGen` annotation generates extension methods (`when`, `whenOrNull`, `maybeWhen`) for Dart enums, simplifying enum handling with type-safe, concise code. It reduces boilerplate and prevents compile-time errors by ensuring all enum cases are handled correctly.
@@ -214,9 +200,6 @@ en.when(
   enum2: () => print('This is enum2'),
 );
 ```
-
-</details>
-
 #### Installation and Running the Code Generator
 
 1. Add the `wc_dart_framework` package to your `pubspec.yaml` file:
