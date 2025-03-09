@@ -26,26 +26,27 @@ This package is designed to provide common code utilities for Flutter projects, 
 
 #### Example
 
-Use the `@AssetGen` annotation to specify the paths to your asset directories. This will generate a file named `images.asset.g.dart` containing the asset classes.
+**Create a separate file (e.g., `images.dart`):** In this file, define one or more classes with the prefix `_$` and annotate them with `@AssetGen` to specify the paths to your asset directories. This will generate a file named images.asset.g.dart containing the asset classes.
 
 ```dart
+// ignore_for_file: unused_element
+
 import 'package:wc_dart_framework/wc_dart_framework.dart';
 
 part 'images.asset.g.dart'; // Generated file
 
+// Class for SVG assets
 @AssetGen(
   path: 'assets/svgs', // Path to your SVG assets
   showExtension: false,
 )
-// ignore: unused_element
-class _$SvgImages {} // Class for SVG assets
+class _$SvgImages {}
 
-// You can add multiple asset paths
+// Class for other image assets
 @AssetGen(
-  path: 'assets/others',
+  path: 'assets/others', // Path to other assets
   showExtension: false,
 )
-// ignore: unused_element
 class _$OtherImages {}
 ```
 
@@ -59,16 +60,18 @@ Image.asset(SvgImages.IC_HOME); // 'assets/svgs/ic_home.svg'
 Image.asset(OtherImages.RED); // 'assets/others/red.jpeg'
 ```
 
+You can create **multiple classes** (e.g., `_$SvgImages`, `_$OtherImages`) to organize assets from different directories.
+
 #### Parameters
 
-| Params        | Description   |
-| ------------- | ------------- |
-| path  | `String` value specifying the path to the assets folder.|
-| generatedClassName  | `String?` value specifying the name of the generated class.|
-| createStaticInstances  | `bool` value determining whether to generate static instances or not.|
-| showExtension  | `bool` value determining whether to include file extensions in the names.|
-| includeFileNames  | `List<String>?` value specifying the list of files to include for generation.|
-| excludeFileNames  | `List<String>?` value specifying the list of files to exclude from generation.|
+| Params                | Description                                                                    |
+| --------------------- | ------------------------------------------------------------------------------ |
+| path                  | `String` value specifying the path to the assets folder.                       |
+| generatedClassName    | `String?` value specifying the name of the generated class.                    |
+| createStaticInstances | `bool` value determining whether to generate static instances or not.          |
+| showExtension         | `bool` value determining whether to include file extensions in the names.      |
+| includeFileNames      | `List<String>?` value specifying the list of files to include for generation.  |
+| excludeFileNames      | `List<String>?` value specifying the list of files to exclude from generation. |
 
 ---
 
@@ -122,11 +125,11 @@ ExampleBlocSelector.errorMessage(
 )
 ```
 
-| Params        | Description   |
-| ------------- | ------------- |
-| hydrateState  | `bool` value determining whether to hydrate the state or not.|
-| hydrateStateKey  | `String?` value specifying the key to use for state hydration.|
-| generateFieldSelectors  | `bool` value determining whether to generate field selectors or not.|
+| Params                 | Description                                                          |
+| ---------------------- | -------------------------------------------------------------------- |
+| hydrateState           | `bool` value determining whether to hydrate the state or not.        |
+| hydrateStateKey        | `String?` value specifying the key to use for state hydration.       |
+| generateFieldSelectors | `bool` value determining whether to generate field selectors or not. |
 
 ---
 
