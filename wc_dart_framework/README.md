@@ -16,6 +16,7 @@ This package is designed to provide common code utilities for Flutter projects, 
 - [BlocGen](#blocgen)
 - [BlocUpdateField](#blocupdatefield)
 - [EnumGen](#enumgen)
+- [Utils](#utils)
 ---
 
 ## How to use wc_dart_framework
@@ -26,7 +27,7 @@ This package is designed to provide common code utilities for Flutter projects, 
 
 #### Example
 
-**Create a separate file (e.g., `images.dart`):** In this file, define one or more classes with the prefix `_$` and annotate them with `@AssetGen` to specify the paths to your asset directories. This will generate a file named images.asset.g.dart containing the asset classes.
+**Create a separate file (e.g., `images.dart`):** In this file, define one or more classes with the prefix `_$` and annotate them with `@AssetGen` to specify the paths to your asset directories. This will generate a file named `images.asset.g.dart` containing the asset classes.
 
 ```dart
 // ignore_for_file: unused_element
@@ -218,7 +219,7 @@ String get privateField;
 
 ### BlocHydratedField
 
-The `@BlocHydratedField` annotation marks a field to be persisted in a hydrated state.
+The `@BlocHydratedField` annotation marks a field to be persisted in a hydrated state. **If you generate code for a hydrated state, you must use a logger for debugging**. For more details, see [Utils](#utils).
 
 #### Example
 
@@ -227,9 +228,11 @@ The `@BlocHydratedField` annotation marks a field to be persisted in a hydrated 
 String get userToken;
 ```
 
-When using `@BlocHydratedField`, ensure your BLoC class includes the `HydratedMixin` and `_$ExampleBlocHydratedMixin` mixins, and call `hydrate()` in the constructor to enable state hydration.
+When using `@BlocHydratedField`, ensure your BLoC class includes the `HydratedMixin` and `_$ExampleBlocHydratedMixin` mixins, and call `hydrate()` in the constructor to enable state hydration. 
 
 ```dart
+final _logger = Logger('example_bloc'); // Logger
+
 @BlocGen()
 class ExampleBloc extends Cubit<ExampleState> 
     with _$ExampleBlocMixin, HydratedMixin, _$ExampleBlocHydratedMixin {
@@ -268,6 +271,21 @@ en.when(
   enum2: () => print('This is enum2'),
 );
 ```
+---
+
+### Utils
+
+The `wc_dart_framework` package also provides `logging` utilities powered by the [logging](https://pub.dev/packages/logging) package. You don't need to import `logging` separately—just initialize it in your `void main` method, and you're ready to go.
+
+#### Example
+
+```
+void main() {
+  LoggingUtils.initialize(); // Initializes logging utilities
+  runApp(MyApp());
+}
+```
+
 ---
 
 #### Installation and Running the Code Generator
