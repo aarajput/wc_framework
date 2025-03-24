@@ -21,7 +21,7 @@ final _logger = Logger('bloc_example_bloc.dart');
   hydrateStateKey: 'blocExampleState',
 )
 class BlocExampleBloc extends Cubit<BlocExampleState>
-    with HydratedMixin, _BlocExampleBlocHydratedMixin, _$BlocExampleBlocMixin {
+    with HydratedMixin, _$BlocExampleBlocHydratedMixin, _$BlocExampleBlocMixin {
   BlocExampleBloc() : super(BlocExampleState()) {
     hydrate();
   }

@@ -1,3 +1,6 @@
+## 1.9.1
+- Documentation added by [@alihamza0173](https://github.com/alihamza0173).
+
 ## 1.9.0
 - Breaking: Added @BlocListenField. Now _$onUpdateField will only generate if @BlocListenField is used.
 
