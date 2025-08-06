@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:build/build.dart';
 import 'package:change_case/change_case.dart';
 import 'package:glob/glob.dart';
@@ -11,7 +11,7 @@ import 'package:wc_dart_framework/wc_dart_framework.dart';
 class AssetGenerator extends GeneratorForAnnotation<AssetGen> {
   @override
   String? generateForAnnotatedElement(
-    final Element element,
+    final Element2 element,
     final ConstantReader annotation,
     final BuildStep buildStep,
   ) {
