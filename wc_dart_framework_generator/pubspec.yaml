@@ -1,6 +1,6 @@
 name: wc_dart_framework_generator
 description: Code generator for wc_dart_framework
-version: 1.9.4
+version: 1.10.0
 homepage: https://github.com/aarajput/wc_framework/tree/main/wc_dart_framework_generator
 repository: https://github.com/aarajput/wc_framework
 issue_tracker: https://github.com/aarajput/wc_framework/issues

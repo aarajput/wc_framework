@@ -447,7 +447,7 @@ packages:
       path: "../wc_dart_framework"
       relative: true
     source: path
-    version: "1.9.1"
+    version: "1.10.0"
   web:
     dependency: transitive
     description:
