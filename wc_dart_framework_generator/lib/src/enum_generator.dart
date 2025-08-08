@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:wc_dart_framework/wc_dart_framework.dart';
@@ -6,26 +6,26 @@ import 'package:wc_dart_framework/wc_dart_framework.dart';
 class EnumGenerator extends GeneratorForAnnotation<EnumGen> {
   @override
   String? generateForAnnotatedElement(
-    Element element,
+    Element2 element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
     final sb = StringBuffer();
 
     final fieldNames = <String>[];
-    final isPureEnum = element is EnumElement;
+    final isPureEnum = element is EnumElement2;
     if (isPureEnum) {
-      for (final field in element.fields) {
+      for (final field in element.fields2) {
         if (field.isEnumConstant) {
           fieldNames.add(field.displayName);
         }
       }
-    } else if (element is ClassElement &&
+    } else if (element is ClassElement2 &&
         element.supertype?.getDisplayString(withNullability: false) ==
             'EnumClass') {
-      final className = element.name;
-      for (final field in element.fields) {
-        final fieldReturnTypeName = field.getter?.returnType.getDisplayString(
+      final className = element.name3;
+      for (final field in element.fields2) {
+        final fieldReturnTypeName = field.getter2?.returnType.getDisplayString(
           withNullability: false,
         );
         if (field.isStatic &&

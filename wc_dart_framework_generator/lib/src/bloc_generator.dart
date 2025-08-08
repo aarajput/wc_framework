@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
@@ -11,12 +11,12 @@ import 'package:wc_dart_framework_generator/extensions/element.dart';
 class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
   @override
   String? generateForAnnotatedElement(
-    Element element,
+    Element2 element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
     final cls = element;
-    if (cls is! ClassElement) {
+    if (cls is! ClassElement2) {
       return null;
     }
     final isHydrateState = annotation.read('hydrateState').boolValue;
@@ -41,11 +41,11 @@ class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
         '@BlocGen can only be on classes that are extended from Cubit or Bloc',
       );
     }
-    final clsMetaTags = cls.metadata
+    final clsMetaTags = cls.metadata2.annotations
         .where((m) => ![
               'BlocGen',
               'BlocHydratedState',
-            ].contains(m.element?.displayName))
+            ].contains(m.element2?.displayName))
         .map(
           (final m) => m.toSource(),
         )
@@ -62,8 +62,8 @@ class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
       return null;
     }
     final clsStateType = superType.typeArguments.first;
-    final clsState = clsStateType.element;
-    if (clsState is! ClassElement) {
+    final clsState = clsStateType.element3;
+    if (clsState is! ClassElement2) {
       return null;
     }
     final clsStateName = superType.typeArguments.first.toString();
@@ -73,8 +73,8 @@ class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
         superType.typeArguments.first.getDisplayString(
       withNullability: false,
     );
-    final fields = clsState.fields.where((field) {
-      final getter = field.getter;
+    final fields = clsState.fields2.where((field) {
+      final getter = field.getter2;
       if (getter == null) {
         return false;
       }
@@ -126,7 +126,7 @@ class ${cls.displayName}Selector<T> extends StatelessWidget {
       ''');
     if (generateFieldSelectors) {
       for (final field in fields) {
-        final getter = field.getter!;
+        final getter = field.getter2!;
         if (getter.hasAnnotation('BlocGenIgnoreFieldSelector')) {
           continue;
         }
@@ -169,7 +169,7 @@ mixin _\$${cls.displayName}Mixin on Cubit<$clsStateName> {
     // bloc-mixing listenFields ---- start
     sb.writeln('void _listenFields(){');
     for (final field in fields) {
-      final getter = field.getter!;
+      final getter = field.getter2!;
       if (!getter.hasAnnotation('BlocListenField')) {
         continue;
       }
@@ -184,7 +184,7 @@ mixin _\$${cls.displayName}Mixin on Cubit<$clsStateName> {
     sb.writeln('}');
     // creating onUpdate methods
     for (final field in fields) {
-      final getter = field.getter!;
+      final getter = field.getter2!;
       if (!getter.hasAnnotation('BlocListenField')) {
         continue;
       }
@@ -197,17 +197,17 @@ mixin _\$${cls.displayName}Mixin on Cubit<$clsStateName> {
 
     // bloc-mixing update fields ---- start
     for (final field in fields) {
-      final getter = field.getter!;
+      final getter = field.getter2!;
       if (!getter.hasAnnotation('BlocUpdateField')) {
         continue;
       }
-      final returnType = getter.returnType.element;
+      final returnType = getter.returnType.element3;
       bool isReturnTypeNullable = getter.returnType.toString().endsWith('?');
       sb.writeln('''
   @mustCallSuper
   void ${blocType == BlocType.cubit ? '' : '_'}update${getter.displayName.toPascalCase()}(final ${getter.returnType} ${field.displayName}) {
         ''');
-      if (returnType is ClassElement && returnType.isBuiltValue) {
+      if (returnType is ClassElement2 && returnType.isBuiltValue) {
         sb.writeln('''
     emit(this.state$clsStateNullableEscapeCharacter.rebuild((final b) {
         ''');
@@ -237,10 +237,10 @@ mixin _\$${cls.displayName}Mixin on Cubit<$clsStateName> {
 
     // creating bloc-hydration ---- start
     final hydratedFields = isHydrateState
-        ? <FieldElement>[]
+        ? <FieldElement2>[]
         : fields.where(
             (field) {
-              final getter = field.getter!;
+              final getter = field.getter2!;
               if (!getter.hasAnnotation('BlocHydratedField')) {
                 return false;
               }
@@ -264,7 +264,7 @@ mixin _\$${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
           final json = <String, dynamic>{};
         ''');
       String getFullType(DartType type) {
-        final typeName = type.element!.displayName;
+        final typeName = type.element3!.displayName;
         String specifiedType;
         if (type.nullabilitySuffix == NullabilitySuffix.question) {
           specifiedType = 'FullType.nullable($typeName,[';
@@ -290,7 +290,7 @@ mixin _\$${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
           ''');
       } else {
         for (final field in hydratedFields) {
-          final getter = field.getter!;
+          final getter = field.getter2!;
           sb.writeln('''
         try {
           json['${field.displayName}'] = serializers.serialize(state.${field.displayName}, specifiedType: const ${getFullType(getter.returnType)});
@@ -322,10 +322,10 @@ mixin _\$${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
           final b = state.toBuilder();
             ''');
         for (final field in hydratedFields) {
-          final getter = field.getter!;
-          final returnTypeElement = getter.returnType.element;
+          final getter = field.getter2!;
+          final returnTypeElement = getter.returnType.element3;
           sb.writeln('''
-        if (json.containsKey('${field.name}')) {
+        if (json.containsKey('${field.name3}')) {
           try {
           ''');
           final deserializedCode = '''
@@ -337,7 +337,7 @@ mixin _\$${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
               b.${field.displayName} = null;
             } else {
           ''');
-          if (returnTypeElement is ClassElement &&
+          if (returnTypeElement is ClassElement2 &&
               returnTypeElement.isBuiltValue) {
             sb.writeln('''
               b.${field.displayName}.replace($deserializedCode);

@@ -1,6 +1,6 @@
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 
-extension XPropertyAccessorElement on PropertyAccessorElement {
+extension XPropertyAccessorElement on GetterElement {
   bool get isReturnTypeNullable {
     return returnType
         .getDisplayString(
@@ -10,17 +10,17 @@ extension XPropertyAccessorElement on PropertyAccessorElement {
   }
 
   bool hasAnnotation(final String annotation) {
-    return metadata.indexWhere(
-          (final md) => md.element?.displayName == annotation,
+    return metadata2.annotations.indexWhere(
+          (final md) => md.element2?.displayName == annotation,
         ) >=
         0;
   }
 }
 
-extension XClassElement on ClassElement {
+extension XClassElement on ClassElement2 {
   bool hasAnnotation(final String annotation) {
-    return metadata.indexWhere(
-          (final md) => md.element?.displayName == annotation,
+    return metadata2.annotations.indexWhere(
+          (final md) => md.element2?.displayName == annotation,
         ) >=
         0;
   }

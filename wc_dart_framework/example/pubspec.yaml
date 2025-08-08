@@ -10,12 +10,12 @@ dependencies:
   flutter:
     sdk: flutter
   wc_dart_framework: 1.8.0
-  built_value: 8.9.3
+  built_value: ^8.11.0
   built_collection: 5.1.1
-  hydrated_bloc: 10.0.0
+  hydrated_bloc: ^10.1.1
   bloc: 9.0.0
-  flutter_bloc: 9.0.0
-  meta: 1.15.0
+  flutter_bloc: 9.1.1
+  meta: 1.16.0
   path_provider: 2.1.5
 
 dependency_overrides:
@@ -26,8 +26,8 @@ dependency_overrides:
 dev_dependencies:
   wc_dart_framework_generator:
     path: ../../wc_dart_framework_generator
-  build_runner: 2.4.14
-  built_value_generator: 8.9.3
+  build_runner: ^2.6.0
+  built_value_generator: ^8.11.0
 
 flutter:
   assets:
