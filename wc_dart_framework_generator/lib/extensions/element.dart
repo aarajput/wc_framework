@@ -24,11 +24,7 @@ extension XClassElement on ClassElement {
 
   bool hasSuperClass(final String superClass) {
     return allSupertypes.indexWhere(
-          (final type) =>
-              type.getDisplayString(
-                withNullability: false,
-              ) ==
-              superClass,
+          (final type) => type.getDisplayString() == superClass,
         ) >=
         0;
   }
@@ -56,11 +52,7 @@ extension XClassElement on ClassElement {
 
   bool get isIterable {
     return allSupertypes.indexWhere((final st) {
-          return st
-              .getDisplayString(
-                withNullability: false,
-              )
-              .startsWith('Iterable<');
+          return st.getDisplayString().startsWith('Iterable<');
         }) >=
         0;
   }
@@ -68,11 +60,7 @@ extension XClassElement on ClassElement {
   bool get isBuiltMap {
     return displayName == 'BuiltMap' ||
         allSupertypes.indexWhere((final st) {
-              return st
-                  .getDisplayString(
-                    withNullability: false,
-                  )
-                  .startsWith('BuiltMap<');
+              return st.getDisplayString().startsWith('BuiltMap<');
             }) >=
             0;
   }

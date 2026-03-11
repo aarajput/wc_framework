@@ -1,4 +1,4 @@
-library wc_dart_framework;
+library;
 
 export 'package:logging/logging.dart';
 

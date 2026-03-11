@@ -30,9 +30,7 @@ class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
     final superTypes = cls.allSupertypes;
     final index = superTypes.indexWhere(
       (final type) {
-        final displayName = type.getDisplayString(
-          withNullability: false,
-        );
+        final displayName = type.getDisplayString();
         return displayName.startsWith('Cubit<') ||
             displayName.startsWith('BlocBase<');
       },
@@ -54,14 +52,9 @@ class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
         )
         .join('\n');
     final superType = superTypes[index];
-    final blocType =
-        superType
-            .getDisplayString(
-              withNullability: false,
-            )
-            .startsWith('Cubit<')
-        ? BlocType.cubit
-        : BlocType.bloc;
+    final BlocType blocType = superType.getDisplayString().startsWith('Cubit<')
+        ? .cubit
+        : .bloc;
     if (superType.typeArguments.isEmpty) {
       return null;
     }
@@ -70,13 +63,12 @@ class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
     if (clsState is! ClassElement) {
       return null;
     }
-    final clsStateName = superType.typeArguments.first.toString();
-    final isClsStateNullable = clsStateName.endsWith('?');
+    final clsStateName = clsStateType.getDisplayString();
+    final isClsStateNullable = clsStateType.nullabilitySuffix == .question;
     final clsStateNullableEscapeCharacter = isClsStateNullable ? '?' : '';
-    final clsStateNameWithoutNullCharacter = superType.typeArguments.first
-        .getDisplayString(
-          withNullability: false,
-        );
+    final clsStateNameWithoutNullCharacter = isClsStateNullable
+        ? clsStateName.substring(0, clsStateName.length - 1)
+        : clsStateName;
     final fields = clsState.fields.where((field) {
       final getter = field.getter;
       if (getter == null) {
@@ -332,11 +324,8 @@ mixin _\$${cls.displayName}HydratedMixin on HydratedMixin<$clsStateName> {
         if (json.containsKey('${field.name}')) {
           try {
           ''');
-          final deserializedCode =
-              '''
-              serializers.deserialize(json['${field.displayName}'], specifiedType: const ${getFullType(getter.returnType)}) as ${getter.returnType.getDisplayString(
-                withNullability: false,
-              )}''';
+          final deserializedCode = '''
+              serializers.deserialize(json['${field.displayName}'], specifiedType: const ${getFullType(getter.returnType)}) as ${getter.returnType.getDisplayString().replaceAll('?', '')}''';
           sb.writeln('''
             if (json['${field.displayName}'] == null) {
               b.${field.displayName} = null;

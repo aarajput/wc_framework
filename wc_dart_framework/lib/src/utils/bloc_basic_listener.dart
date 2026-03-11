@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 
 typedef BlocListenWhenCondition<S> = bool Function(S previous, S current);
 
-class BlocBasicListener<Bloc extends BlocBase<State>, State> {
+class BlocBasicListener<B extends BlocBase<State>, State> {
   Stream<State> get stream => bloc.stream.where(
         (final state) {
           final result = listenWhen(_lastState, state);

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.12.3
+
+- analyzer: `>=9.0.0 <11.0.0`
+- sdk: `>=3.10.0 <4.0.0`
+
 ## 1.12.2
 
 - Fix: Fixed file path issue of asset_generator. Replaced windows path separator with posix.
