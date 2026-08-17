@@ -10,13 +10,13 @@ part 'bloc_example_state.g.dart';
 abstract class BlocExampleState
     implements Built<BlocExampleState, BlocExampleStateBuilder> {
   factory BlocExampleState([
-    final void Function(BlocExampleStateBuilder) updates,
+    void Function(BlocExampleStateBuilder) updates,
   ]) = _$BlocExampleState;
 
   BlocExampleState._();
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _initialize(final BlocExampleStateBuilder b) => b;
+  static void _initialize(BlocExampleStateBuilder b) => b;
 
   @BlocHydratedField()
   @BlocUpdateField()
