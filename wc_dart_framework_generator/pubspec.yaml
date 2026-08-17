@@ -11,7 +11,7 @@ environment:
 
 dependencies:
   source_gen: ">=3.0.0 <5.0.0"
-  analyzer: ">=9.0.0 <11.0.0"
+  analyzer: ^14.1.0
   # analyzer: 7.5.9
   build: ">=3.0.0 <5.0.0"
   change_case: ^2.0.0
