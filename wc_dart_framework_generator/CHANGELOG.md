@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.12.4
+
+- Fix: Generated code no longer marks parameters as `final`, which is an error on Dart 3.13 and above.
+- analyzer: `^14.1.0`
+
 ## 1.12.3
 
 - analyzer: `>=9.0.0 <11.0.0`

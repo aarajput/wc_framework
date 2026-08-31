@@ -16,7 +16,7 @@ class LoggingUtils {
         return true;
       }(),
     );
-    Logger.root.onRecord.listen((final record) {
+    Logger.root.onRecord.listen((record) {
       AnsiPen? pen;
       if (record.level == Level.SEVERE) {
         pen = AnsiPen()..red();

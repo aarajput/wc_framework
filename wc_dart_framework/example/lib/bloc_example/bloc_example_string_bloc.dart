@@ -10,6 +10,6 @@ part 'bloc_example_string_bloc.bloc.g.dart';
 class BlocExampleStringBloc extends Cubit<String?> {
   BlocExampleStringBloc() : super(null);
 
-  factory BlocExampleStringBloc.of(final BuildContext context) =>
+  factory BlocExampleStringBloc.of(BuildContext context) =>
       BlocProvider.of<BlocExampleStringBloc>(context);
 }

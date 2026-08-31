@@ -26,7 +26,7 @@ class BlocExampleBloc extends Cubit<BlocExampleState>
     hydrate();
   }
 
-  factory BlocExampleBloc.of(final BuildContext context) =>
+  factory BlocExampleBloc.of(BuildContext context) =>
       BlocProvider.of<BlocExampleBloc>(context);
 
   @override

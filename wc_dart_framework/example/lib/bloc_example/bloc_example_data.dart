@@ -9,13 +9,13 @@ part 'bloc_example_data.g.dart';
 abstract class BlocExampleData
     implements Built<BlocExampleData, BlocExampleDataBuilder> {
   factory BlocExampleData([
-    final void Function(BlocExampleDataBuilder) updates,
+    void Function(BlocExampleDataBuilder) updates,
   ]) = _$BlocExampleData;
 
   BlocExampleData._();
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _initialize(final BlocExampleDataBuilder b) => b;
+  static void _initialize(BlocExampleDataBuilder b) => b;
 
   static Serializer<BlocExampleData> get serializer =>
       _$blocExampleDataSerializer;
@@ -34,14 +34,14 @@ abstract class BlocExampleData
 
   BuiltMap<BlocExampleData, BlocExampleData> get mapsDatas;
 
-  static BlocExampleData fromDynamic(final dynamic json) {
+  static BlocExampleData fromDynamic(dynamic json) {
     return serializers.deserializeWith(
       serializer,
       json,
     )!;
   }
 
-  static BuiltList<BlocExampleData> fromDynamics(final List<dynamic> list) {
+  static BuiltList<BlocExampleData> fromDynamics(List<dynamic> list) {
     return BuiltList<BlocExampleData>(list.map(fromDynamic));
   }
 }

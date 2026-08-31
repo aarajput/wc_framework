@@ -12,23 +12,23 @@ import 'package:wc_dart_framework/wc_dart_framework.dart';
 class AssetGenerator extends GeneratorForAnnotation<AssetGen> {
   @override
   String? generateForAnnotatedElement(
-    final Element element,
-    final ConstantReader annotation,
-    final BuildStep buildStep,
+    Element element,
+    ConstantReader annotation,
+    BuildStep buildStep,
   ) {
     final path = annotation.read('path').stringValue;
     final createStaticInstances = annotation
         .read('createStaticInstances')
         .boolValue;
     final showExtension = annotation.read('showExtension').boolValue;
-    List<Glob>? getGlobs(final String key) {
+    List<Glob>? getGlobs(String key) {
       if (annotation.read(key).isNull) {
         return null;
       }
       return annotation
           .read(key)
           .listValue
-          .map((final obj) => Glob(obj.toStringValue() ?? ''))
+          .map((obj) => Glob(obj.toStringValue() ?? ''))
           .toList();
     }
 
@@ -84,9 +84,9 @@ class AssetGenerator extends GeneratorForAnnotation<AssetGen> {
   }
 
   bool isFileIgnored({
-    required final File file,
-    required final List<Glob>? includeFileNames,
-    required final List<Glob>? excludeFileNames,
+    required File file,
+    required List<Glob>? includeFileNames,
+    required List<Glob>? excludeFileNames,
   }) {
     final fileName = basename(file.path);
 
@@ -96,14 +96,14 @@ class AssetGenerator extends GeneratorForAnnotation<AssetGen> {
     }
 
     if (includeFileNames != null) {
-      if (includeFileNames.any((final glob) => glob.matches(fileName))) {
+      if (includeFileNames.any((glob) => glob.matches(fileName))) {
         return false;
       } else {
         return true;
       }
     }
     if (excludeFileNames != null) {
-      if (excludeFileNames.any((final glob) => glob.matches(fileName))) {
+      if (excludeFileNames.any((glob) => glob.matches(fileName))) {
         return true;
       } else {
         return false;
@@ -112,7 +112,7 @@ class AssetGenerator extends GeneratorForAnnotation<AssetGen> {
     return false;
   }
 
-  bool _isSystemFile(final String fileName) {
+  bool _isSystemFile(String fileName) {
     // Exclude macOS system files
     if (fileName == '.DS_Store' || fileName.startsWith('._')) {
       return true;

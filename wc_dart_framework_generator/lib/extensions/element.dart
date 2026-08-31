@@ -6,31 +6,31 @@ extension XPropertyAccessorElement on GetterElement {
     return returnType.nullabilitySuffix == NullabilitySuffix.question;
   }
 
-  bool hasAnnotation(final String annotation) {
+  bool hasAnnotation(String annotation) {
     return metadata.annotations.indexWhere(
-          (final md) => md.element?.displayName == annotation,
+          (md) => md.element?.displayName == annotation,
         ) >=
         0;
   }
 }
 
 extension XClassElement on ClassElement {
-  bool hasAnnotation(final String annotation) {
+  bool hasAnnotation(String annotation) {
     return metadata.annotations.indexWhere(
-          (final md) => md.element?.displayName == annotation,
+          (md) => md.element?.displayName == annotation,
         ) >=
         0;
   }
 
-  bool hasSuperClass(final String superClass) {
+  bool hasSuperClass(String superClass) {
     return allSupertypes.indexWhere(
-          (final type) => type.getDisplayString() == superClass,
+          (type) => type.getDisplayString() == superClass,
         ) >=
         0;
   }
 
   bool get isBuiltValue {
-    return allSupertypes.indexWhere((final st) {
+    return allSupertypes.indexWhere((st) {
               final sst = st.toString();
               return sst.startsWith('Built<') ||
                   sst.startsWith('BuiltIterable<');
@@ -40,7 +40,7 @@ extension XClassElement on ClassElement {
   }
 
   bool get isBuiltObject {
-    return allSupertypes.indexWhere((final st) {
+    return allSupertypes.indexWhere((st) {
           return st.toString().startsWith('Built<');
         }) >=
         0;
@@ -51,7 +51,7 @@ extension XClassElement on ClassElement {
   }
 
   bool get isIterable {
-    return allSupertypes.indexWhere((final st) {
+    return allSupertypes.indexWhere((st) {
           return st.getDisplayString().startsWith('Iterable<');
         }) >=
         0;
@@ -59,7 +59,7 @@ extension XClassElement on ClassElement {
 
   bool get isBuiltMap {
     return displayName == 'BuiltMap' ||
-        allSupertypes.indexWhere((final st) {
+        allSupertypes.indexWhere((st) {
               return st.getDisplayString().startsWith('BuiltMap<');
             }) >=
             0;

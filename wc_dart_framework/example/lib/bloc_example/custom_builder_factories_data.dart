@@ -10,7 +10,7 @@ abstract class CustomBuilderFactoriesData
     implements
         Built<CustomBuilderFactoriesData, CustomBuilderFactoriesDataBuilder> {
   factory CustomBuilderFactoriesData([
-    final void Function(CustomBuilderFactoriesDataBuilder) updates,
+    void Function(CustomBuilderFactoriesDataBuilder) updates,
   ]) = _$CustomBuilderFactoriesData;
 
   CustomBuilderFactoriesData._();

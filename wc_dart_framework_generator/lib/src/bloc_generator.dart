@@ -29,7 +29,7 @@ class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
         .boolValue;
     final superTypes = cls.allSupertypes;
     final index = superTypes.indexWhere(
-      (final type) {
+      (type) {
         final displayName = type.getDisplayString();
         return displayName.startsWith('Cubit<') ||
             displayName.startsWith('BlocBase<');
@@ -48,7 +48,7 @@ class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
           ].contains(m.element?.displayName),
         )
         .map(
-          (final m) => m.toSource(),
+          (m) => m.toSource(),
         )
         .join('\n');
     final superType = superTypes[index];
@@ -95,7 +95,7 @@ class ${cls.displayName}Builder extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(final BuildContext context) {
+  Widget build(BuildContext context) {
     return BlocBuilder<${cls.displayName}, $clsStateName>(
       buildWhen: buildWhen,
       builder: builder,
@@ -114,7 +114,7 @@ class ${cls.displayName}Selector<T> extends StatelessWidget {
   final ${cls.displayName}? bloc;
 
   const ${cls.displayName}Selector({
-    final Key? key,
+    Key? key,
     required this.selector,
     required this.builder,
     this.bloc,
@@ -130,9 +130,9 @@ class ${cls.displayName}Selector<T> extends StatelessWidget {
             '${getter.returnType}${isClsStateNullable && !getter.isReturnTypeNullable ? '?' : ''}';
         sb.writeln('''
   static ${cls.displayName}Selector<$returnTypeDisplayNameWithNullability> ${field.displayName}({
-    final Key? key,
+    Key? key,
     required Widget Function($returnTypeDisplayNameWithNullability ${field.displayName}) builder,
-    final ${cls.displayName}? bloc,
+    ${cls.displayName}? bloc,
   }) {
     return ${cls.displayName}Selector(
       key: key,
@@ -147,7 +147,7 @@ class ${cls.displayName}Selector<T> extends StatelessWidget {
 
     sb.writeln('''
   @override
-  Widget build(final BuildContext context) {
+  Widget build(BuildContext context) {
     return BlocSelector<${cls.displayName}, $clsStateName, T>(
       selector: selector,
       builder: (_,value) => builder(value),
@@ -201,11 +201,11 @@ mixin _\$${cls.displayName}Mixin on Cubit<$clsStateName> {
       bool isReturnTypeNullable = getter.returnType.toString().endsWith('?');
       sb.writeln('''
   @mustCallSuper
-  void ${blocType == BlocType.cubit ? '' : '_'}update${getter.displayName.toPascalCase()}(final ${getter.returnType} ${field.displayName}) {
+  void ${blocType == BlocType.cubit ? '' : '_'}update${getter.displayName.toPascalCase()}(${getter.returnType} ${field.displayName}) {
         ''');
       if (returnType is ClassElement && returnType.isBuiltValue) {
         sb.writeln('''
-    emit(this.state$clsStateNullableEscapeCharacter.rebuild((final b) {
+    emit(this.state$clsStateNullableEscapeCharacter.rebuild((b) {
         ''');
         if (isReturnTypeNullable) {
           sb.writeln('''
@@ -222,7 +222,7 @@ mixin _\$${cls.displayName}Mixin on Cubit<$clsStateName> {
         ''');
       } else {
         sb.writeln('''
-    emit(this.state$clsStateNullableEscapeCharacter.rebuild((final b) => b.${field.displayName} = ${field.displayName}));
+    emit(this.state$clsStateNullableEscapeCharacter.rebuild((b) => b.${field.displayName} = ${field.displayName}));
         ''');
       }
       sb.writeln('}');

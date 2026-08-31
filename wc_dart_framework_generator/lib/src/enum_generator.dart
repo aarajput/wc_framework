@@ -38,11 +38,11 @@ class EnumGenerator extends GeneratorForAnnotation<EnumGen> {
         '''
 extension X${element.displayName} on ${element.displayName} {
   R when<R>({
-    ${fieldNames.map((final fn) => 'required R Function() $fn').join(',\n')},
+    ${fieldNames.map((fn) => 'required R Function() $fn').join(',\n')},
   }) {
     switch (this) {
     ${fieldNames.map(
-          (final fn) => '''
+          (fn) => '''
       case ${element.displayName}.$fn:
         return $fn();
     ''',
@@ -52,11 +52,11 @@ extension X${element.displayName} on ${element.displayName} {
   }
   
   R? whenOrNull<R>({
-    ${fieldNames.map((final fn) => 'R? Function()? $fn').join(',\n')},
+    ${fieldNames.map((fn) => 'R? Function()? $fn').join(',\n')},
   }) {
     switch (this) {
     ${fieldNames.map(
-          (final fn) => '''
+          (fn) => '''
       case ${element.displayName}.$fn:
         return $fn?.call();
     ''',
@@ -67,11 +67,11 @@ extension X${element.displayName} on ${element.displayName} {
   }
   
   R maybeWhen<R>({
-    ${fieldNames.map((final fn) => 'R Function()? $fn').join(',\n')},
+    ${fieldNames.map((fn) => 'R Function()? $fn').join(',\n')},
     required R orElse(),
   }) {
     ${fieldNames.map(
-          (final fn) => '''
+          (fn) => '''
     if (this == ${element.displayName}.$fn && $fn != null) {
       return $fn();
     }

@@ -6,7 +6,7 @@ typedef BlocListenWhenCondition<S> = bool Function(S previous, S current);
 
 class BlocBasicListener<B extends BlocBase<State>, State> {
   Stream<State> get stream => bloc.stream.where(
-        (final state) {
+        (state) {
           final result = listenWhen(_lastState, state);
           _lastState = state;
           return result;
