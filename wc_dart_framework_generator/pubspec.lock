@@ -223,7 +223,7 @@ packages:
       path: "../wc_dart_framework"
       relative: true
     source: path
-    version: "1.12.1"
+    version: "1.13.0"
   yaml:
     dependency: transitive
     description:

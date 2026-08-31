@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.13.0
+
+- Fix: Generated code no longer marks parameters as `final`, which is an error on Dart 3.13 and
+  above.
+
 ## 1.12.1
 
 - Version matched with 'wc_dart_framework_generator'
@@ -22,7 +27,8 @@
 
 ## 1.9.0
 
-- Breaking: Added @BlocListenField. Now \_$onUpdateField will only generate if @BlocListenField is used.
+- Breaking: Added @BlocListenField. Now \_$onUpdateField will only generate if @BlocListenField is
+  used.
 
 ## 1.8.0
 
