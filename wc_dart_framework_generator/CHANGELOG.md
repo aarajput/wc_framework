@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.13.1
+
+- Fix: `@BlocUpdateField`, `@BlocListenField` and `@BlocHydratedField` on state getters are detected again, so `updateXxx` methods, listeners and hydration are generated.
+
 ## 1.13.0
 
 - Fix: Generated code no longer marks parameters as `final`, which is an error on Dart 3.13 and above.

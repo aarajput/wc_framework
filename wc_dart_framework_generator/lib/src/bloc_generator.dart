@@ -45,7 +45,7 @@ class BlocGenerator extends GeneratorForAnnotation<BlocGen> {
           (m) => ![
             'BlocGen',
             'BlocHydratedState',
-          ].contains(m.element?.displayName),
+          ].contains(m.annotationName),
         )
         .map(
           (m) => m.toSource(),

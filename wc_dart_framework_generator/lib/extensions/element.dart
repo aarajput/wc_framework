@@ -1,6 +1,16 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 
+extension XElementAnnotation on ElementAnnotation {
+  String? get annotationName {
+    final e = element;
+    if (e is ConstructorElement) {
+      return e.enclosingElement.name;
+    }
+    return e?.name;
+  }
+}
+
 extension XPropertyAccessorElement on GetterElement {
   bool get isReturnTypeNullable {
     return returnType.nullabilitySuffix == NullabilitySuffix.question;
@@ -8,7 +18,7 @@ extension XPropertyAccessorElement on GetterElement {
 
   bool hasAnnotation(String annotation) {
     return metadata.annotations.indexWhere(
-          (md) => md.element?.displayName == annotation,
+          (md) => md.annotationName == annotation,
         ) >=
         0;
   }
@@ -17,7 +27,7 @@ extension XPropertyAccessorElement on GetterElement {
 extension XClassElement on ClassElement {
   bool hasAnnotation(String annotation) {
     return metadata.annotations.indexWhere(
-          (md) => md.element?.displayName == annotation,
+          (md) => md.annotationName == annotation,
         ) >=
         0;
   }

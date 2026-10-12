@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.13.1
+
+- Version matched with 'wc_dart_framework_generator'
+
 ## 1.13.0
 
 - Fix: Generated code no longer marks parameters as `final`, which is an error on Dart 3.13 and
